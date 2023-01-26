@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SignUp">
+
+  <TextView
+      android:id="@+id/title"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="5dp"
+      android:layout_marginTop="80dp"
+      android:gravity="center"
+      android:text="One Click \n Automated Attendance System"
+      android:textSize="30dp"
+      android:textStyle="bold"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent" />
+
+
+  <EditText
+      android:id="@+id/email_signup"
+      android:layout_width="308dp"
+      android:layout_height="71dp"
+      android:layout_marginBottom="40dp"
+      android:ems="10"
+      android:inputType="textPersonName"
+      android:text="Enter Email"
+      app:layout_constraintBottom_toTopOf="@+id/Password_signup"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0.174"
+      app:layout_constraintStart_toStartOf="parent" />
+
+  <EditText
+      android:id="@+id/Password_signup"
+      android:layout_width="310dp"
+      android:layout_height="0dp"
+      android:layout_marginStart="24dp"
+      android:layout_marginBottom="16dp"
+      android:ems="10"
+      android:inputType="textPersonName"
+      android:text="Enter Password"
+
+      app:layout_constraintBottom_toTopOf="@+id/button_signUp"
+      app:layout_constraintStart_toStartOf="parent" />
+
+  <Button
+      android:id="@+id/button_signUp"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="103dp"
+      android:layout_marginEnd="220dp"
+      android:layout_marginBottom="44dp"
+      android:text="Sign Up"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="1.0"
+      app:layout_constraintStart_toStartOf="parent" />
+
+  <EditText
+      android:id="@+id/FirstName"
+      android:layout_width="183dp"
+      android:layout_height="45dp"
+      android:layout_marginStart="4dp"
+      android:layout_marginTop="72dp"
+      android:ems="10"
+      android:inputType="textPersonName"
+      android:text="First Name"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/title" />
+
+  <EditText
+      android:id="@+id/LastName"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="72dp"
+      android:layout_marginEnd="8dp"
+      android:ems="10"
+      android:inputType="textPersonName"
+      android:text="Last Name"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/title" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

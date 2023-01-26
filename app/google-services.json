@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "643417840628",
+    "project_id": "oneclick-54a51",
+    "storage_bucket": "oneclick-54a51.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:643417840628:android:627ffd5371f1359fbd77a1",
+        "android_client_info": {
+          "package_name": "com.example.oneclick_attendance"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "643417840628-06ksn8ilpbbdnt7f8rj8ifn3l6ah35i5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCyzxZ38dQiYsx2R2KbEToQZU7OKiTxcI8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "643417840628-06ksn8ilpbbdnt7f8rj8ifn3l6ah35i5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
