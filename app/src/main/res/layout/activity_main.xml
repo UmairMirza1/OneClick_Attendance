@@ -4,8 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    tools:context=".MainActivity">
+    android:background="@drawable/create_account_bg"
+
+    tools:context=".SignInActivity">
 
 
     <EditText
@@ -15,7 +16,7 @@
         android:layout_marginTop="56dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="Enter Email"
+        android:hint="Enter Email"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.079"
         app:layout_constraintStart_toStartOf="parent"
@@ -28,7 +29,7 @@
         android:layout_marginStart="5dp"
         android:layout_marginTop="80dp"
         android:gravity="center"
-        android:text="One Click \n Automated Attendance System"
+        android:text="One Click: \n Automated Attendance System"
         android:textSize="30dp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
@@ -42,7 +43,7 @@
         android:layout_marginBottom="76dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="Enter Password"
+        android:hint="Enter Password"
         app:layout_constraintBottom_toTopOf="@+id/button_login"
         app:layout_constraintStart_toStartOf="parent" />
 

@@ -10,6 +10,25 @@ public class Teacher {
     String LastName;
     String Password;
 
+
+    ArrayList<Section> sections;
+    public Teacher(String email, String firstName, String lastName, String password) {
+        Email = email;
+        FirstName = firstName;
+        LastName = lastName;
+        Password = password;
+        sections = new ArrayList<Section>() ;
+    }
+
+    public Teacher(String email, String firstName, String lastName, String password,ArrayList<Section> section) {
+        Email = email;
+        FirstName = firstName;
+        LastName = lastName;
+        Password = password;
+        sections = section;
+    }
+
+
     public String getEmail() {
         return Email;
     }
@@ -48,22 +67,5 @@ public class Teacher {
 
     public void setSections(ArrayList<Section> sections) {
         this.sections = sections;
-    }
-
-    ArrayList<Section> sections;
-    public Teacher(String email, String firstName, String lastName, String password) {
-        Email = email;
-        FirstName = firstName;
-        LastName = lastName;
-        Password = password;
-        sections = new ArrayList<Section>() ;
-    }
-
-    public Teacher(String email, String firstName, String lastName, String password,ArrayList<Section> section) {
-        Email = email;
-        FirstName = firstName;
-        LastName = lastName;
-        Password = password;
-        sections = section;
     }
 }

@@ -1,9 +1,9 @@
 package com.example.oneclick_attendance;
 
-import static android.content.ContentValues.TAG;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -18,13 +18,11 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class SignUp extends AppCompatActivity {
+public class SignUpActivity extends AppCompatActivity {
     EditText fName,lName, Email, Pass;
     Button Signup_btn;
 
     FirebaseAuth mAuth;
-
-
 
 
     @Override
@@ -32,6 +30,7 @@ public class SignUp extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
         setViews();
+        mAuth= FirebaseAuth.getInstance();
         Signup_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -45,7 +44,6 @@ public class SignUp extends AppCompatActivity {
               // Teacher newT=  new Teacher(Fname,Lname,email,pass);
                  setUpTeacherandcreateAuth(email,pass);
 
-
             }
 
 
@@ -55,9 +53,13 @@ public class SignUp extends AppCompatActivity {
     }
 
     private void updateUI() {
+        Intent Signin = new Intent(SignUpActivity.this,SignInActivity.class );
+        startActivity(Signin);
+
     }
 
     private void setViews() {
+
         fName = findViewById(R.id.FirstName);
         lName  = findViewById(R.id.LastName);
         Email  = findViewById(R.id.email_signup);
@@ -66,7 +68,7 @@ public class SignUp extends AppCompatActivity {
     }
 
     private void setUpTeacherandcreateAuth(String email, String pass) {
-        mAuth= FirebaseAuth.getInstance();
+
         mAuth.createUserWithEmailAndPassword(email,pass).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
@@ -74,16 +76,22 @@ public class SignUp extends AppCompatActivity {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d( "signupactivity","createUserWithEmail:success");
                     FirebaseUser user = mAuth.getCurrentUser();
-                    Toast.makeText(SignUp.this , "You've signedup", Toast.LENGTH_SHORT);
-                    //  updateUI(user);
+                    Toast.makeText(SignUpActivity.this , "You've signedup", Toast.LENGTH_SHORT);
+                    CreateTeacherJsonTree();
+                    updateUI();
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w("signupactivity", "createUserWithEmail:failure", task.getException());
-                    Toast.makeText(SignUp.this, "Authentication failed.",
+                    Toast.makeText(SignUpActivity.this, "Authentication failed.",
                             Toast.LENGTH_SHORT).show();
                     // updateUI(null);
                 }
             }
         });
     }
+
+    private void CreateTeacherJsonTree() {
+    }
+
+
 }
