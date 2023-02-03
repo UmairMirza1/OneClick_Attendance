@@ -8,6 +8,8 @@ public class Attendance {
 
     String Date;
     ArrayList<String> Students_list;
+
+    // sedarch this
     Bitmap video;
 
     public Attendance(String date, ArrayList<String> students_list, Bitmap video) {

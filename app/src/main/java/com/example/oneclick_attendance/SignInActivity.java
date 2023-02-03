@@ -37,7 +37,6 @@ public class SignInActivity extends AppCompatActivity {
 
                 login();
 
-
             }
         });
 

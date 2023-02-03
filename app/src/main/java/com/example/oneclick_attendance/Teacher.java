@@ -8,23 +8,23 @@ public class Teacher {
     String Email;
     String FirstName;
     String LastName;
-    String Password;
+
 
 
     ArrayList<Section> sections;
-    public Teacher(String email, String firstName, String lastName, String password) {
+    public Teacher(String email, String firstName, String lastName) {
+
         Email = email;
         FirstName = firstName;
         LastName = lastName;
-        Password = password;
         sections = new ArrayList<Section>() ;
+
     }
 
-    public Teacher(String email, String firstName, String lastName, String password,ArrayList<Section> section) {
+    public Teacher(String email, String firstName, String lastName,ArrayList<Section> section) {
         Email = email;
         FirstName = firstName;
         LastName = lastName;
-        Password = password;
         sections = section;
     }
 
@@ -53,13 +53,9 @@ public class Teacher {
         LastName = lastName;
     }
 
-    public String getPassword() {
-        return Password;
-    }
 
-    public void setPassword(String password) {
-        Password = password;
-    }
+
+
 
     public ArrayList<Section> getSections() {
         return sections;

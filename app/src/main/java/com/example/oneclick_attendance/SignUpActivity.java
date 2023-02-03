@@ -19,7 +19,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public class SignUpActivity extends AppCompatActivity {
-    EditText fName,lName, Email, Pass;
+    EditText fName, lName, Email, Pass;
     Button Signup_btn;
 
     FirebaseAuth mAuth;
@@ -30,22 +30,19 @@ public class SignUpActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
         setViews();
-        mAuth= FirebaseAuth.getInstance();
+        mAuth = FirebaseAuth.getInstance();
         Signup_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 // call firebase  here
-                String  Fname= fName.getText().toString();
-                String  Lname= lName.getText().toString();
-                String  email = Email.getText().toString();
-                String  pass= Pass.getText().toString();
-
-              // Teacher newT=  new Teacher(Fname,Lname,email,pass);
-                 setUpTeacherandcreateAuth(email,pass);
+                String Fname = fName.getText().toString();
+                String Lname = lName.getText().toString();
+                String email = Email.getText().toString();
+                String pass = Pass.getText().toString();
+                setUpTeacherandcreateAuth(email, pass);
 
             }
-
 
 
         });
@@ -53,7 +50,7 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     private void updateUI() {
-        Intent Signin = new Intent(SignUpActivity.this,SignInActivity.class );
+        Intent Signin = new Intent(SignUpActivity.this, SignInActivity.class);
         startActivity(Signin);
 
     }
@@ -61,22 +58,22 @@ public class SignUpActivity extends AppCompatActivity {
     private void setViews() {
 
         fName = findViewById(R.id.FirstName);
-        lName  = findViewById(R.id.LastName);
-        Email  = findViewById(R.id.email_signup);
-        Pass=  findViewById(R.id.Password_signup);
+        lName = findViewById(R.id.LastName);
+        Email = findViewById(R.id.email_signup);
+        Pass = findViewById(R.id.Password_signup);
         Signup_btn = findViewById(R.id.button_signUp);
     }
 
     private void setUpTeacherandcreateAuth(String email, String pass) {
 
-        mAuth.createUserWithEmailAndPassword(email,pass).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+        mAuth.createUserWithEmailAndPassword(email, pass).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
                     // Sign in success, update UI with the signed-in user's information
-                    Log.d( "signupactivity","createUserWithEmail:success");
+                    Log.d("signupactivity", "createUserWithEmail:success");
                     FirebaseUser user = mAuth.getCurrentUser();
-                    Toast.makeText(SignUpActivity.this , "You've signedup", Toast.LENGTH_SHORT);
+                    Toast.makeText(SignUpActivity.this, "You've signedup", Toast.LENGTH_SHORT).show();
                     CreateTeacherJsonTree();
                     updateUI();
                 } else {
@@ -91,6 +88,10 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     private void CreateTeacherJsonTree() {
+
+        // Teacher newT=  new Teacher(Fname,Lname,email,pass);
+
+
     }
 
 
