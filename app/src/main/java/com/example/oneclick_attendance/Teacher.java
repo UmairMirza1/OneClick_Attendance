@@ -53,10 +53,6 @@ public class Teacher {
         LastName = lastName;
     }
 
-
-
-
-
     public ArrayList<Section> getSections() {
         return sections;
     }

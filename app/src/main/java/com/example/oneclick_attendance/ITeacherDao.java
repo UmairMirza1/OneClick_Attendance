@@ -8,4 +8,5 @@ public interface ITeacherDao {
 
     void addSection(Section section);
 
+    void loadTeacher(String email);
 }

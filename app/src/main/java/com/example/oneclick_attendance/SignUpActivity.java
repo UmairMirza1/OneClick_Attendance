@@ -24,30 +24,27 @@ public class SignUpActivity extends AppCompatActivity {
 
     FirebaseAuth mAuth;
 
+    ITeacherDao dao ;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
         setViews();
+        setListeners();
         mAuth = FirebaseAuth.getInstance();
-        Signup_btn.setOnClickListener(new View.OnClickListener() {
+        dao = new TeacherFirebaseDAO(new TeacherFirebaseDAO.observer() {
             @Override
-            public void onClick(View view) {
+            public void update() {
 
-                // call firebase  here
-                String Fname = fName.getText().toString();
-                String Lname = lName.getText().toString();
-                String email = Email.getText().toString();
-                String pass = Pass.getText().toString();
-                setUpTeacherandcreateAuth(email, pass);
 
             }
-
-
         });
 
     }
+
+
 
     private void updateUI() {
         Intent Signin = new Intent(SignUpActivity.this, SignInActivity.class);
@@ -88,11 +85,21 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     private void CreateTeacherJsonTree() {
-
-        // Teacher newT=  new Teacher(Fname,Lname,email,pass);
-
+        Teacher newTeacher =  new Teacher(fName.getText().toString(),lName.getText().toString(),Email.getText().toString());
+        dao.saveTeacher(newTeacher);
 
     }
+
+    private void setListeners() {
+        Signup_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setUpTeacherandcreateAuth( Email.getText().toString(), Pass.getText().toString());
+
+            }
+        });
+    }
+
 
 
 }
