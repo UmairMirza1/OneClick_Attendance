@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'com.google.gms.google-services'
+    id 'com.chaquo.python'
 }
 
 android {
@@ -15,8 +16,28 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        ndk {
+            abiFilters "armeabi-v7a", "arm64-v8a", "x86", "x86_64"
+        }
+        python {
+            version "3.11"
+            buildPython "C:/Python311/python.exe"
+
+            pip {
+                // A requirement specifier, with or without a version number
+                install "requests"
+
+            }
+
+        }
     }
 
+    sourceSets {
+        main {
+            python.srcDir "src/main/python"
+        }
+    }
     buildTypes {
         release {
             minifyEnabled false
