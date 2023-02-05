@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">OneClick:Attendance</string>
+    <string name="camera">Camera</string>
+    <string name="new_lecture"><u><b><i>New Lecture</i></b></u></string>
+    <string name="browse">Browse</string>
+    <string name="proceed">Proceed</string>
 </resources>
