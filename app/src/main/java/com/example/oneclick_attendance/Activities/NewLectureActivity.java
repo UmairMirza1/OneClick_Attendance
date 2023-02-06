@@ -95,6 +95,8 @@ public class NewLectureActivity extends AppCompatActivity {
                             Toast.makeText(NewLectureActivity.this, result, Toast.LENGTH_LONG).show();
                         }
                     });
+
+
                 }
             }).start();
 
@@ -124,6 +126,26 @@ public class NewLectureActivity extends AppCompatActivity {
 
     }
 
+
+
+    private void ApiCall() {
+        ByteArrayOutputStream outputStream;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            try (InputStream inputStream = getContentResolver().openInputStream(videoUri)) {
+                outputStream = Utility.getByteArrayOutputStream(inputStream);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+            String EncodedVideo = Utility.EncodeVideo(outputStream);
+            Log.d("newLectureActivity", "calling API");
+            result = Api.GetAPIData(EncodedVideo);
+            Log.i("newLectureActivity", "result from API: " + result);
+        }
+    }
+
+
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
@@ -144,23 +166,6 @@ public class NewLectureActivity extends AppCompatActivity {
             video.setVideoURI(videoUri);
             video.start();
 
-        }
-    }
-
-
-    private void ApiCall() {
-        ByteArrayOutputStream outputStream;
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            try (InputStream inputStream = getContentResolver().openInputStream(videoUri)) {
-                outputStream = Utility.getByteArrayOutputStream(inputStream);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-
-            String EncodedVideo = Utility.EncodeVideo(outputStream);
-            Log.d("newLectureActivity", "calling API");
-            result = Api.GetAPIData(EncodedVideo);
-            Log.i("newLectureActivity", "result from API: " + result);
         }
     }
 }

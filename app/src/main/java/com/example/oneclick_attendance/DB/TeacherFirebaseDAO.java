@@ -90,6 +90,6 @@ public class TeacherFirebaseDAO implements ITeacherDao {
     }
 
     @Override
-    public void loadTeacher(String email) {
+    public void loadTeacherSections(String email) {
     }
 }

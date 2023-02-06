@@ -9,6 +9,10 @@ import java.io.InputStream;
 public class Utility {
 
 
+    public static void ParseCSV(){
+
+    }
+
     public static ByteArrayOutputStream getByteArrayOutputStream(InputStream inputStream) {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         byte[] buffer = new byte[1024];
