@@ -20,8 +20,13 @@ import android.widget.VideoView;
 import com.chaquo.python.PyObject;
 import com.chaquo.python.Python;
 import com.chaquo.python.android.AndroidPlatform;
+
 import android.Manifest;
+
+import com.example.oneclick_attendance.API.APIWrapper;
 import com.example.oneclick_attendance.R;
+import com.example.oneclick_attendance.Utils.Utility;
+import com.google.android.gms.common.api.Api;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -38,92 +43,41 @@ public class NewLectureActivity extends AppCompatActivity {
 
 
     private static final int REQUEST_VIDEO_CAPTURE = 200;
-    private static final int SELECT_PHOTO = 150 ;
-    Button Proceed,Cancel,Camera,Browse;
+    private static final int SELECT_PHOTO = 150;
+    Button Proceed, Cancel, Camera, Browse;
 
 
     VideoView video;
 
     Uri videoUri;
 
+    String result;
 
+    APIWrapper Api;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_lecture);
-
         SetViews();
         Setlisteners();
-        if (! Python.isStarted()) {
-            Python.start(new AndroidPlatform(this));
-        }
-
-       // StartPython();
-
+        Api = new APIWrapper(this);
     }
 
 
 
-    private void StartPython() {
-
-
-//        // TODO
-        //getResources().openRawResource(R.raw.testimage)
-        ByteArrayOutputStream outputStream;
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            try (InputStream inputStream = getContentResolver().openInputStream(videoUri)) {
-
-                outputStream = new ByteArrayOutputStream();
-                byte[] buffer = new byte[1024];
-                int length = 0;
-                while (true) {
-                    try {
-                        if ((length = inputStream.read(buffer)) == -1) break;
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    outputStream.write(buffer, 0, length);
-                }
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-
-            byte[] data = outputStream.toByteArray();
-            // encode the file into base64
-            String encoded = Base64.encodeToString(data, 0);
-            //String filedata = "data:image/png;base64," + encoded;
-            String filedata = "data:video/mp4;base64," + encoded;
-
-            Python py = Python.getInstance();
-            PyObject pyObject = py.getModule("app");
-            PyObject obj = pyObject.callAttr("fun", "images", filedata,null);
-            String databoi = obj.toString();
-
-            String name = databoi.substring(2, databoi.indexOf("]")-1);
-
-            List<String> myList = new ArrayList<String>(Arrays.asList(name.split(",")));
-
-
-            //Toast.makeText(this, databoi, Toast.LENGTH_SHORT).show();
-            Log.i("bolal", "StartPython: "+databoi);
-            Log.i(" bolal", String.valueOf(obj.getClass()));
-            Log.i("bolal", "mylist : "+myList);
-            Log.i("bolal", "name : "+name);
-        }
-    }
 
     private void SetViews() {
         Proceed = findViewById(R.id.Proceed);
         Cancel = findViewById(R.id.Cancel);
-        Camera=findViewById(R.id.Camera);
-        Browse =findViewById(R.id.Browse);
-        video=findViewById(R.id.lectureVideo);
+        Camera = findViewById(R.id.Camera);
+        Browse = findViewById(R.id.Browse);
+        video = findViewById(R.id.lectureVideo);
 
     }
 
-    private  void  getCameraPermission(){
-        if( ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
+    private void getCameraPermission() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, 100);
         }
 
@@ -134,12 +88,17 @@ public class NewLectureActivity extends AppCompatActivity {
         Proceed.setOnClickListener(v -> {
             Toast.makeText(this, "Proceed", Toast.LENGTH_SHORT).show();
 
-           new Thread(new Runnable() {
-               @Override
-               public void run() {
-                   StartPython();
-               }
-           }).start();
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    ApiCall();
+                    runOnUiThread(new Runnable() {
+                        public void run() {
+                            Toast.makeText(NewLectureActivity.this, result, Toast.LENGTH_LONG).show();
+                        }
+                    });
+                }
+            }).start();
 
         });
 
@@ -159,11 +118,10 @@ public class NewLectureActivity extends AppCompatActivity {
         });
         Browse.setOnClickListener(v -> {
             Toast.makeText(this, "Browse", Toast.LENGTH_SHORT).show();
-            Intent intent =new Intent(Intent.ACTION_PICK);
+            Intent intent = new Intent(Intent.ACTION_PICK);
             intent.setType("video/*");
-            startActivityForResult(intent,SELECT_PHOTO);
+            startActivityForResult(intent, SELECT_PHOTO);
         });
-
 
 
     }
@@ -188,6 +146,23 @@ public class NewLectureActivity extends AppCompatActivity {
             video.setVideoURI(videoUri);
             video.start();
 
+        }
+    }
+
+
+    private void ApiCall() {
+        ByteArrayOutputStream outputStream;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            try (InputStream inputStream = getContentResolver().openInputStream(videoUri)) {
+                outputStream = Utility.getByteArrayOutputStream(inputStream);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+            String EncodedVideo = Utility.EncodeVideo(outputStream);
+            Log.d("newLectureActivity", "calling API");
+            result = Api.GetAPIData(EncodedVideo);
+            Log.i("newLectureActivity", "result from API: " + result);
         }
     }
 }
