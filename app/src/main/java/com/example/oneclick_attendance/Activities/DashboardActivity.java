@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.oneclick_attendance.JavaClasses.Section;
 import com.example.oneclick_attendance.Recycler.DashboardAdapter;
-import com.example.oneclick_attendance.Recycler.DashboardViewModel;
+import com.example.oneclick_attendance.ViewModel.DashboardViewModel;
 import com.example.oneclick_attendance.Interface.ITeacherDao;
 import com.example.oneclick_attendance.R;
 import com.example.oneclick_attendance.DB.TeacherFirebaseDAO;

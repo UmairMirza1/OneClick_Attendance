@@ -80,8 +80,6 @@ public class NewLectureActivity extends AppCompatActivity {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, 100);
         }
-
-
     }
 
     private void Setlisteners() {

@@ -1,4 +1,4 @@
-package com.example.oneclick_attendance.Recycler;
+package com.example.oneclick_attendance.ViewModel;
 
 import androidx.lifecycle.ViewModel;
 
