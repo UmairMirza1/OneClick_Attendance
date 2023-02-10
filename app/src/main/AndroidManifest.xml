@@ -20,6 +20,10 @@
             android:name=".Activities.DetectionResultActivity"
             android:exported="false" />
         <activity
+            android:name=".Activities.kotlin.DashboardActivity"
+            android:exported="false" />
+
+        <activity
             android:name=".Activities.NewSectionActivity"
             android:exported="false" />
         <activity
@@ -28,21 +32,21 @@
         <activity
             android:name=".Activities.NewLectureActivity"
             android:exported="true">
+
+
+        </activity>
+        <activity
+            android:name=".Activities.SignUpActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.SignInActivity"
+            android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".Activities.SignUpActivity"
-            android:exported="false" />
-        <activity
-            android:name=".Activities.DashboardActivity"
-            android:exported="false" />
-        <activity
-            android:name=".Activities.SignInActivity"
-            android:exported="true" />
     </application>
 
 </manifest>
