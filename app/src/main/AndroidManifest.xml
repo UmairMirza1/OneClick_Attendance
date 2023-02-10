@@ -17,13 +17,13 @@
         android:theme="@style/Theme.OneClick_Attendance"
         tools:targetApi="31">
         <activity
-            android:name=".DetectionResultActivity"
+            android:name=".Activities.DetectionResultActivity"
             android:exported="false" />
         <activity
-            android:name=".NewSectionActivity"
+            android:name=".Activities.NewSectionActivity"
             android:exported="false" />
         <activity
-            android:name=".AttendanceResultActivity"
+            android:name=".Activities.AttendanceResultActivity"
             android:exported="false" />
         <activity
             android:name=".Activities.NewLectureActivity"

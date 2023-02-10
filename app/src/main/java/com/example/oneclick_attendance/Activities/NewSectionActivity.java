@@ -17,6 +17,7 @@ public class NewSectionActivity extends AppCompatActivity {
 
     }
 
-    private void setViews() {
+    public void setViews() {
     }
+
 }

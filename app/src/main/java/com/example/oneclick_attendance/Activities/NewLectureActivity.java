@@ -40,12 +40,9 @@ import java.util.Arrays;
 import java.util.List;
 
 public class NewLectureActivity extends AppCompatActivity {
-
-
     private static final int REQUEST_VIDEO_CAPTURE = 200;
     private static final int SELECT_PHOTO = 150;
     Button Proceed, Cancel, Camera, Browse;
-
 
     VideoView video;
 
@@ -65,9 +62,8 @@ public class NewLectureActivity extends AppCompatActivity {
     }
 
 
-
-
     private void SetViews() {
+
         Proceed = findViewById(R.id.Proceed);
         Cancel = findViewById(R.id.Cancel);
         Camera = findViewById(R.id.Camera);
@@ -84,6 +80,11 @@ public class NewLectureActivity extends AppCompatActivity {
 
     private void Setlisteners() {
         Proceed.setOnClickListener(v -> {
+            if (videoUri == null) {
+                Toast.makeText(this, "Please select a video", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
             Toast.makeText(this, "Proceed", Toast.LENGTH_SHORT).show();
 
             new Thread(new Runnable() {
@@ -127,7 +128,6 @@ public class NewLectureActivity extends AppCompatActivity {
     }
 
 
-
     private void ApiCall() {
         ByteArrayOutputStream outputStream;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
@@ -143,7 +143,6 @@ public class NewLectureActivity extends AppCompatActivity {
             Log.i("newLectureActivity", "result from API: " + result);
         }
     }
-
 
 
     @Override
