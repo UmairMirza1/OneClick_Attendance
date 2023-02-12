@@ -6,16 +6,28 @@ import java.util.ArrayList;
 public class Section implements Serializable {
 
     String name;
+
+    String courseCode;
     ArrayList<Attendance> attendances;
 
-    public Section(){}
-
-    public Section(String name){
-        this.name = name ;
-        this.attendances=new ArrayList<Attendance>();
+    public String getCourseCode() {
+        return courseCode;
     }
 
-    public Section(String name,  ArrayList<Attendance> attendances) {
+    public void setCourseCode(String courseCode) {
+        this.courseCode = courseCode;
+    }
+
+
+    public Section() {
+    }
+
+    public Section(String name) {
+        this.name = name;
+        this.attendances = new ArrayList<Attendance>();
+    }
+
+    public Section(String name, ArrayList<Attendance> attendances) {
         this.name = name;
         this.attendances = attendances;
     }
@@ -28,14 +40,13 @@ public class Section implements Serializable {
         this.name = name;
     }
 
-    public void setAttendances( ArrayList<Attendance> attendances) {
+    public void setAttendances(ArrayList<Attendance> attendances) {
         this.attendances = attendances;
     }
 
-    public  ArrayList<Attendance> getAttendances() {
+    public ArrayList<Attendance> getAttendances() {
         return attendances;
     }
-
 
 
 }

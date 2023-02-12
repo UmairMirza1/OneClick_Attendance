@@ -4,41 +4,44 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="horizontal"
+    tools:context=".Activities.kotlin.DashboardActivity"
     android:background="@drawable/create_account_bg">
 
     <TextView
-        android:id="@+id/title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="264dp"
-        android:gravity="center"
-        android:text="One Click: \n Automated Attendance System"
-        android:textSize="30dp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/SectionsList"
+        android:id="@+id/textView"
+        android:layout_width="165dp"
+        android:layout_height="28dp"
+        android:layout_marginStart="58dp"
+        android:layout_marginTop="68dp"
+        android:layout_marginEnd="188dp"
+        android:text="@string/dashboard"
+        android:textSize="24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="MissingConstraints" />
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="145dp"
-        android:layout_height="84dp"
-        android:layout_marginBottom="592dp"
-        android:text="DashboardActivity"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/coursesCardsRecycleView"
+        android:layout_width="408dp"
+        android:layout_height="455dp"
+        android:layout_marginStart="3dp"
+        android:layout_marginEnd="4dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/SectionsList"
-        android:layout_width="743dp"
-        android:layout_height="0dp"
-        android:layout_marginBottom="376dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/title"
-        tools:ignore="MissingConstraints" />
-
-
+    <Button
+        android:id="@+id/newSectionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="209dp"
+        android:layout_marginEnd="65dp"
+        android:layout_marginBottom="84dp"
+        android:text="New Section"
+        app:layout_constraintBottom_toTopOf="@+id/coursesCardsRecycleView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

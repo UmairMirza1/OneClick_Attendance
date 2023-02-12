@@ -6,4 +6,6 @@
     <string name="proceed">Proceed</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="dashboard"><u><b><i>Dashboard</i></b></u></string>
+    <string name="new_section"><u><b><i>New Section</i></b></u></string>
 </resources>
