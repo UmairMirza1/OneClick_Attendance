@@ -1,7 +1,9 @@
 package com.example.oneclick_attendance.Activities.kotlin
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
@@ -23,14 +25,14 @@ class DashboardActivity : AppCompatActivity() {
     var layoutManager: RecyclerView.LayoutManager? = null
     var Vm: DashboardViewModel? = null
     var mAdapter: DashboardAdapter? = null
-    var dao: ITeacherDao? = null
-
+    var dao: ITeacherDao? = null;
+    lateinit var NewSection: Button;
 
     private lateinit var newRecyclerView: RecyclerView
     private lateinit var newArrList: ArrayList<CourseCount>
-    private lateinit var coursesNameList : Array<String>
-    private lateinit var sectionNameList : Array<String>
-    private lateinit var stdCountList : Array<Int>
+    private lateinit var coursesNameList: Array<String>
+    private lateinit var sectionNameList: Array<String>
+    private lateinit var stdCountList: Array<Int>
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,10 +40,13 @@ class DashboardActivity : AppCompatActivity() {
         setContentView(R.layout.activity_dashboard)
 
         newRecyclerView = findViewById(R.id.coursesCardsRecycleView)
-        newRecyclerView.layoutManager = GridLayoutManager(this,2)
+        newRecyclerView.layoutManager = GridLayoutManager(this, 2)
         newRecyclerView.setHasFixedSize(true)
 
-        newArrList = arrayListOf<CourseCount>()
+        //void function
+        setListener();
+
+        newArrList = arrayListOf()
 
         // test data
         coursesNameList = arrayOf(
@@ -51,7 +56,7 @@ class DashboardActivity : AppCompatActivity() {
             "BCS-8A", "BCS-8A", "BCS-7A", "BCS-1A"
         )
         stdCountList = arrayOf(
-            50,47,40,30
+            50, 47, 40, 30
         )
 
         getTeacherCourses()
@@ -61,6 +66,16 @@ class DashboardActivity : AppCompatActivity() {
         SetVmAndRv()
 
 
+    }
+
+    private fun setListener() {
+        NewSection = findViewById(R.id.newSectionButton)
+        NewSection.setOnClickListener {
+            val newSection = Intent(this, NewSectionActivity::class.java).apply {
+                putExtra("UserId", userId)
+            }
+            startActivity(newSection)
+        }
     }
 
     private fun SetVmAndRv() {
@@ -83,10 +98,9 @@ class DashboardActivity : AppCompatActivity() {
             userId = intent.getStringExtra("UserId")
         }
 
-    private fun getTeacherCourses()
-    {
-        for(i in coursesNameList.indices){
-            val coursecount = CourseCount(coursesNameList[i],sectionNameList[i],stdCountList[i])
+    private fun getTeacherCourses() {
+        for (i in coursesNameList.indices) {
+            val coursecount = CourseCount(coursesNameList[i], sectionNameList[i], stdCountList[i])
             newArrList.add(coursecount)
         }
         newRecyclerView.adapter = CoursesRegisteredAdapter(newArrList)
