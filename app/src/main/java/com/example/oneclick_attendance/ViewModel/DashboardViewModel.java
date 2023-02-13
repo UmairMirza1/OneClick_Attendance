@@ -21,9 +21,6 @@ public class DashboardViewModel extends ViewModel {
         if (dao != null){
             dao.addSection(section);
         }
-        else{
-            Sections.add(section);
-        }
     }
 
 
