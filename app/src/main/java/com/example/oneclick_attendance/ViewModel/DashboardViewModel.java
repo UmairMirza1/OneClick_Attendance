@@ -16,12 +16,12 @@ public class DashboardViewModel extends ViewModel {
     private String userID;
 
 
-    // TODO: Save a new section
-    public void addSection(Section section){
-        if (dao != null){
-            dao.addSection(section);
-        }
-    }
+
+//    public void addSection(Section section){
+//        if (dao != null){
+//            dao.addSection(section);
+//        }
+//    }
 
 
     public void setDao(ITeacherDao d){

@@ -30,7 +30,7 @@ class NewSectionActivity : AppCompatActivity() {
     var ITeacherDao: ITeacherDao? = null;
 
     var userID: String? = null;
-
+    var ListOfStudents: List<String> = ArrayList();
     lateinit var Section: Section;
     lateinit var launcher: ActivityResultLauncher<Intent>;
 
@@ -48,10 +48,10 @@ class NewSectionActivity : AppCompatActivity() {
         //Toast.makeText(this, userID, Toast.LENGTH_SHORT).show();
         setViews();
         setListeners();
-        IntentResults();
+        intentResults();
     }
 
-    private fun IntentResults() {
+    private fun intentResults() {
         launcher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == Activity.RESULT_OK) {
@@ -66,8 +66,8 @@ class NewSectionActivity : AppCompatActivity() {
 
 
     private fun setViews() {
-        courseCode = findViewById(R.id.NewSectionName);
-        courseName = findViewById(R.id.NewSectionCourseCode);
+        courseCode = findViewById(R.id.NewSectionCourseCode);
+        courseName = findViewById(R.id.NewSectionName);
         confirmCsv = findViewById(R.id.ConfirmCsv);
         SaveSection = findViewById(R.id.saveSection);
         AddCsv = findViewById(R.id.AddCsv);
@@ -85,48 +85,26 @@ class NewSectionActivity : AppCompatActivity() {
 
         SaveSection?.setOnClickListener {
             Toast.makeText(this, "Section Saved", Toast.LENGTH_SHORT).show();
-            //TODO: save to Firebase
+            Section = Section(courseName?.text.toString(), courseCode?.text.toString(), ListOfStudents);
+
+        Log.d("csvresult", "check section list of students: ${Section.registredStudents}");
+        ITeacherDao?.addSection(userID, Section);
+
         }
     }
 
+
+    // TODO: Add this to Utility Class
     @Throws(IOException::class)
     fun readCSV(uri: Uri): List<String> {
         val csvFile = contentResolver.openInputStream(uri)
         val isr = InputStreamReader(csvFile)
-        val Results = BufferedReader(isr).readLines()
-        Log.d("csvresult", "ParseCsv: ${Results.toString()}")
-        return Results
+        val results = BufferedReader(isr).readLines()
+        //Log.d("csvresult", "ParseCsv: ${Results.toString()}")
+        ListOfStudents = results;
+        Log.d("csvresult", "ParseCsv: $ListOfStudents");
+        return results
     }
-//    private fun ParseCsv(uri: Uri) {
-////        val file= File(uri.path.toString());
-////        Log.d("file path", "ParseCsv: $file");
-//
-////        val inputStream = FileInputStream(file)
-////        val reader = BufferedReader(InputStreamReader(inputStream))
-////        val rows = mutableListOf<List<String>>()
-////        while (true) {
-////            val line = reader.readLine() ?: break
-////            rows.add(line.split(","))
-////        }
-////
-////        Log.d("csvresult", "ParseCsv: $rows")
-////        inputStream.close()
-//
-//        val inputStream = contentResolver.openInputStream(uri)
-//
-//        val csvReader = CSVReaderBuilder(FileReader(uri.path.toString())).build()
-//
-//        // Read the CSV file into a list of arrays
-//        var line: Array<String>? = csvReader.readNext()
-//        while (line != null) {
-//            // Do something with the data
-//            Log.d("csvresult", "ParseCsv: $line")
-//
-//            line = csvReader.readNext()
-//        }
-//
-//
-//    }
 
 
 }
