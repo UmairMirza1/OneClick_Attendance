@@ -86,10 +86,15 @@ public class TeacherFirebaseDAO implements ITeacherDao {
     }
 
     @Override
-    public void addSection(Section section) {
+    public void addSection( String userId, Section section) {
+        myRef.child("Teachers").child(userId).child("Sections").child(section.getCourseCode()).setValue(section);
+
     }
 
     @Override
     public void loadTeacherSections(String email) {
     }
+
+
+
 }
