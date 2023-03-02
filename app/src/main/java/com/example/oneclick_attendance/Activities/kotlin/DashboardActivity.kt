@@ -2,6 +2,7 @@ package com.example.oneclick_attendance.Activities.kotlin
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
@@ -30,12 +31,34 @@ class DashboardActivity : AppCompatActivity() {
 
     private lateinit var newRecyclerView: RecyclerView
     private lateinit var newArrList: ArrayList<CourseCount>
-    private lateinit var coursesNameList: Array<String>
-    private lateinit var sectionNameList: Array<String>
-    private lateinit var stdCountList: Array<Int>
+    private lateinit var coursesNameList: ArrayList<String>
+    private lateinit var sectionNameList: ArrayList<String>
+    private lateinit var stdCountList: ArrayList<String>
+    private lateinit var teacherFirebase: TeacherFirebaseDAO
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        teacherFirebase = TeacherFirebaseDAO(TeacherFirebaseDAO.observer {  })
+
+        var details = java.util.ArrayList<java.util.ArrayList<String>>()
+        teacherFirebase.loadTeacherSections(
+            object : DataCallBack {
+                override fun onResponce(listOfCourses: java.util.ArrayList<java.util.ArrayList<String>>) {
+//                            Log.e("dashdata", listOfCourses.toString())
+                            details = listOfCourses
+                            sectionNameList = listOfCourses[0]
+                            coursesNameList = listOfCourses[1]
+                            stdCountList = listOfCourses[2]
+
+                            // let's refresh data
+                            getTeacherCourses()
+
+                            dataFromIntent
+                            SetViews()
+                            SetVmAndRv()
+                }
+            },intent.getStringExtra("UserId"));
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dashboard)
 
@@ -48,26 +71,24 @@ class DashboardActivity : AppCompatActivity() {
 
         newArrList = arrayListOf()
 
-        // test data
-        coursesNameList = arrayOf(
-            "American History", "Data Science", "Data Warehouse", "Probability & Statistics"
-        )
-        sectionNameList = arrayOf(
-            "BCS-8A", "BCS-8A", "BCS-7A", "BCS-1A"
-        )
-        stdCountList = arrayOf(
-            50, 47, 40, 30
-        )
-
-        getTeacherCourses()
-
-        dataFromIntent
-        SetViews()
-        SetVmAndRv()
-
+//        // test data
+//        coursesNameList = arrayListOf(
+//            "American History", "Data Science", "Data Warehouse", "Probability & Statistics"
+//        )
+//        sectionNameList = arrayListOf(
+//            "BCS-8A", "BCS-8A", "BCS-7A", "BCS-1A"
+//        )
+//        stdCountList = arrayOf(
+//            50, 47, 40, 30
+//        )
 
     }
 
+
+    // to deal with asynchronous db calls we need callback function
+    interface DataCallBack {
+        fun onResponce(listOfCourses: java.util.ArrayList<java.util.ArrayList<String>>)
+    }
     private fun setListener() {
         NewSection = findViewById(R.id.newSectionButton)
         NewSection.setOnClickListener {
@@ -100,7 +121,7 @@ class DashboardActivity : AppCompatActivity() {
 
     private fun getTeacherCourses() {
         for (i in coursesNameList.indices) {
-            val coursecount = CourseCount(coursesNameList[i], sectionNameList[i], stdCountList[i])
+            val coursecount = CourseCount(coursesNameList[i], sectionNameList[i], stdCountList[i].toInt())
             newArrList.add(coursecount)
         }
         newRecyclerView.adapter = CoursesRegisteredAdapter(newArrList)
