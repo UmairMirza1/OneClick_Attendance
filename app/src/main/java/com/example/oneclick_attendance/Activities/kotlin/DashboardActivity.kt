@@ -38,26 +38,30 @@ class DashboardActivity : AppCompatActivity() {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        teacherFirebase = TeacherFirebaseDAO(TeacherFirebaseDAO.observer {  })
+        teacherFirebase = TeacherFirebaseDAO(TeacherFirebaseDAO.observer { })
+        SetViews()
+        SetVmAndRv()
+
 
         var details = java.util.ArrayList<java.util.ArrayList<String>>()
         teacherFirebase.loadTeacherSections(
             object : DataCallBack {
                 override fun onResponce(listOfCourses: java.util.ArrayList<java.util.ArrayList<String>>) {
 //                            Log.e("dashdata", listOfCourses.toString())
-                            details = listOfCourses
-                            sectionNameList = listOfCourses[0]
-                            coursesNameList = listOfCourses[1]
-                            stdCountList = listOfCourses[2]
+                    details = listOfCourses
+                    sectionNameList = listOfCourses[0]
+                    coursesNameList = listOfCourses[1]
+                    stdCountList = listOfCourses[2]
 
-                            // let's refresh data
-                            getTeacherCourses()
+                    // let's refresh data
+                    getTeacherCourses()
 
-                            dataFromIntent
-                            SetViews()
-                            SetVmAndRv()
+                    dataFromIntent
+
+
                 }
-            },intent.getStringExtra("UserId"));
+            }, intent.getStringExtra("UserId")
+        );
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dashboard)
@@ -71,20 +75,7 @@ class DashboardActivity : AppCompatActivity() {
 
         newArrList = arrayListOf()
 
-//        // test data
-//        coursesNameList = arrayListOf(
-//            "American History", "Data Science", "Data Warehouse", "Probability & Statistics"
-//        )
-//        sectionNameList = arrayListOf(
-//            "BCS-8A", "BCS-8A", "BCS-7A", "BCS-1A"
-//        )
-//        stdCountList = arrayOf(
-//            50, 47, 40, 30
-//        )
-
     }
-
-
     // to deal with asynchronous db calls we need callback function
     interface DataCallBack {
         fun onResponce(listOfCourses: java.util.ArrayList<java.util.ArrayList<String>>)
@@ -105,11 +96,11 @@ class DashboardActivity : AppCompatActivity() {
         Vm!!.setDao(dao)
         Vm!!.setUserId(userId)
         layoutManager = GridLayoutManager(this, number_of_columns)
-        val rv_main = findViewById<View>(R.id.coursesCardsRecycleView) as RecyclerView
+        val rv_main = findViewById<View>(R.id.coursesCardsRecycleView)
     }
 
     private fun RefreshDataSet() {
-        // Call  mAdapter.notifyDataSetChanged();
+           //mAdapter.notifyDataSetChanged();
     }
 
     private fun SetViews() {}

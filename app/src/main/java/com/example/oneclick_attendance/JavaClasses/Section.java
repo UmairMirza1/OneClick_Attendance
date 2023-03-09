@@ -10,6 +10,10 @@ public class Section implements Serializable {
 
     String courseCode;
 
+    public String getStudentsCount() {
+        return StudentsCount;
+    }
+
     List<String> RegistredStudents;
 
     String StudentsCount;
@@ -51,11 +55,11 @@ public class Section implements Serializable {
         this.attendances = attendances;
     }
 
-    public String getCoursename() {
+    public String getCourseName() {
         return Coursename;
     }
 
-    public void setCoursename(String coursename) {
+    public void setCourseName(String coursename) {
         Coursename = coursename;
     }
 
