@@ -97,11 +97,13 @@ public class TeacherFirebaseDAO implements ITeacherDao {
     @Override
     public void loadTeacherSections(DashboardActivity.DataCallBack callback, String usrId) {
         myRef = database.getReference("OneClick").child("Teachers").child(usrId).child("Sections");
-        ArrayList<String> coursesName = new ArrayList<String>();
-        ArrayList<String> coursesCode = new ArrayList<String>();
-        ArrayList<String> studentsCount = new ArrayList<String>();
-        ArrayList<String> RegStudents = new ArrayList<String>();
-        ArrayList<ArrayList<String>> details = new ArrayList<ArrayList<String>>();
+//        ArrayList<String> coursesName = new ArrayList<String>();
+//        ArrayList<String> coursesCode = new ArrayList<String>();
+//        ArrayList<String> studentsCount = new ArrayList<String>();
+//        ArrayList<String> RegStudents = new ArrayList<String>();
+//        ArrayList<ArrayList<String>> details = new ArrayList<ArrayList<String>>();
+
+        ArrayList<Section> sections = new ArrayList<Section>();
 
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -116,17 +118,23 @@ public class TeacherFirebaseDAO implements ITeacherDao {
 //                        studentsCount.add(Integer.toString(stdCount));
                         Section section = d.getValue(Section.class);
                         assert section != null;
-                        coursesName.add(section.getCourseName());
-                        coursesCode.add(section.getCourseCode());
+//                       sections.add(section);
+                        sections.add(section);
                         Log.d("regstudents", "onDataChange: "  + section.getRegistredStudents());
-                        studentsCount.add(Integer.toString(section.getRegistredStudents().size()));
+                        callback.onResponce(sections);
+//                        coursesName.add(section.getCourseName());
+//                        coursesCode.add(section.getCourseCode());
+//                        Log.d("regstudents", "onDataChange: "  + section.getRegistredStudents());
+//                        studentsCount.add(Integer.toString(section.getRegistredStudents().size()));
+
+
                     }
 
-                    //observer.update();
-                    details.add(coursesName);
-                    details.add(coursesCode);
-                    details.add(studentsCount);
-                    callback.onResponce(details);
+                     //observer.update();
+//                    details.add(coursesName);
+//                    details.add(coursesCode);
+//                    details.add(studentsCount);
+                    callback.onResponce(sections);
                 }
                 catch (Exception ex) {
                     Log.e("firebasedb", ex.getMessage());

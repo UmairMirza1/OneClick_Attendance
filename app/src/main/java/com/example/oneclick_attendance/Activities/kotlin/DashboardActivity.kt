@@ -46,12 +46,16 @@ class DashboardActivity : AppCompatActivity() {
         var details = java.util.ArrayList<java.util.ArrayList<String>>()
         teacherFirebase.loadTeacherSections(
             object : DataCallBack {
-                override fun onResponce(listOfCourses: java.util.ArrayList<java.util.ArrayList<String>>) {
-//                            Log.e("dashdata", listOfCourses.toString())
-                    details = listOfCourses
-                    sectionNameList = listOfCourses[0]
-                    coursesNameList = listOfCourses[1]
-                    stdCountList = listOfCourses[2]
+                override fun onResponce(listofSection: ArrayList<Section>){
+                    Log.d("dashdata", listofSection.toString());
+                    // print all the sections
+                    for (section in listofSection) {
+                        Log.d("dashdata", section.toString());
+                    }
+//                    details = listOfCourses
+//                    sectionNameList = listOfCourses[0]
+//                    coursesNameList = listOfCourses[1]
+//                    stdCountList = listOfCourses[2]
 
                     // let's refresh data
                     getTeacherCourses()
@@ -76,10 +80,13 @@ class DashboardActivity : AppCompatActivity() {
         newArrList = arrayListOf()
 
     }
+
     // to deal with asynchronous db calls we need callback function
     interface DataCallBack {
-        fun onResponce(listOfCourses: java.util.ArrayList<java.util.ArrayList<String>>)
+        //        fun onResponce(listOfCourses: java.util.ArrayList<java.util.ArrayList<String>>)
+        fun onResponce(listofSection: ArrayList<Section>)
     }
+
     private fun setListener() {
         NewSection = findViewById(R.id.newSectionButton)
         NewSection.setOnClickListener {
@@ -100,7 +107,7 @@ class DashboardActivity : AppCompatActivity() {
     }
 
     private fun RefreshDataSet() {
-           //mAdapter.notifyDataSetChanged();
+        //mAdapter.notifyDataSetChanged();
     }
 
     private fun SetViews() {}
@@ -112,7 +119,8 @@ class DashboardActivity : AppCompatActivity() {
 
     private fun getTeacherCourses() {
         for (i in coursesNameList.indices) {
-            val coursecount = CourseCount(coursesNameList[i], sectionNameList[i], stdCountList[i].toInt())
+            val coursecount =
+                CourseCount(coursesNameList[i], sectionNameList[i], stdCountList[i].toInt())
             newArrList.add(coursecount)
         }
         newRecyclerView.adapter = CoursesRegisteredAdapter(newArrList)
