@@ -5,10 +5,12 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Button
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.oneclick_attendance.Activities.kotlin.SectionActivity
 import com.example.oneclick_attendance.DB.TeacherFirebaseDAO
 import com.example.oneclick_attendance.Interface.ITeacherDao
 import com.example.oneclick_attendance.JavaClasses.Section
@@ -17,8 +19,10 @@ import com.example.oneclick_attendance.R
 import com.example.oneclick_attendance.Recycler.DashboardAdapter
 import com.example.oneclick_attendance.Recycler.kotlin.CoursesRegisteredAdapter
 import com.example.oneclick_attendance.ViewModel.DashboardViewModel
+import java.io.Serializable
+import java.util.Objects.isNull
 
-class DashboardActivity : AppCompatActivity() {
+class DashboardActivity : AppCompatActivity(), CoursesRegisteredAdapter.ItemClickListener {
     private val DataSet = ArrayList<Section>()
     private val number_of_columns = 2
     var userId: String? = null
@@ -31,48 +35,52 @@ class DashboardActivity : AppCompatActivity() {
 
     private lateinit var newRecyclerView: RecyclerView
     private lateinit var newArrList: ArrayList<CourseCount>
-    private lateinit var coursesNameList: ArrayList<String>
-    private lateinit var sectionNameList: ArrayList<String>
-    private lateinit var stdCountList: ArrayList<String>
+    private var coursesNameList: ArrayList<String> = ArrayList<String>()
+    private var sectionNameList: ArrayList<String> = ArrayList<String>()
+    private var stdCountList: ArrayList<String> =  ArrayList<String>()
+    private var sectionsList: ArrayList<Section> = ArrayList<Section>()
     private lateinit var teacherFirebase: TeacherFirebaseDAO
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         teacherFirebase = TeacherFirebaseDAO(TeacherFirebaseDAO.observer { })
-        SetViews()
-        SetVmAndRv()
 
 
         var details = java.util.ArrayList<java.util.ArrayList<String>>()
+        userId =intent.getStringExtra("UserId")
         teacherFirebase.loadTeacherSections(
             object : DataCallBack {
                 override fun onResponce(listofSection: ArrayList<Section>){
-                    Log.d("dashdata", listofSection.toString());
+                    Log.e("lengthOfSections: ",listofSection.size.toString())
                     // print all the sections
                     for (section in listofSection) {
-                        Log.d("dashdata", section.toString());
+                        coursesNameList.add(section.name)
+                        sectionNameList.add(section.courseCode)
+                        if (!isNull(section.registredStudents))
+                            stdCountList.add(section.registredStudents.size.toString())
+                        sectionsList.add(section)
                     }
-//                    details = listOfCourses
-//                    sectionNameList = listOfCourses[0]
-//                    coursesNameList = listOfCourses[1]
-//                    stdCountList = listOfCourses[2]
 
                     // let's refresh data
                     getTeacherCourses()
 
                     dataFromIntent
+                    SetViews()
+                    SetVmAndRv()
 
 
                 }
-            }, intent.getStringExtra("UserId")
+            }, userId
         );
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dashboard)
 
+
         newRecyclerView = findViewById(R.id.coursesCardsRecycleView)
         newRecyclerView.layoutManager = GridLayoutManager(this, 2)
         newRecyclerView.setHasFixedSize(true)
+
 
         //void function
         setListener();
@@ -81,6 +89,13 @@ class DashboardActivity : AppCompatActivity() {
 
     }
 
+    @Override
+    override fun onItemClick(position: Int) {
+        val intent = Intent(this, SectionActivity::class.java)
+        intent.putExtra("selected_section", sectionsList[position] as Serializable)
+        intent.putExtra("userID",userId)
+        startActivity(intent)
+    }
     // to deal with asynchronous db calls we need callback function
     interface DataCallBack {
         //        fun onResponce(listOfCourses: java.util.ArrayList<java.util.ArrayList<String>>)
@@ -95,6 +110,7 @@ class DashboardActivity : AppCompatActivity() {
             }
             startActivity(newSection)
         }
+
     }
 
     private fun SetVmAndRv() {
@@ -118,11 +134,11 @@ class DashboardActivity : AppCompatActivity() {
         }
 
     private fun getTeacherCourses() {
-        for (i in coursesNameList.indices) {
+        for (i in stdCountList.indices) {
             val coursecount =
                 CourseCount(coursesNameList[i], sectionNameList[i], stdCountList[i].toInt())
             newArrList.add(coursecount)
         }
-        newRecyclerView.adapter = CoursesRegisteredAdapter(newArrList)
+        newRecyclerView.adapter = CoursesRegisteredAdapter(newArrList,this)
     }
 }

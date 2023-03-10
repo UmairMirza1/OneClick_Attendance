@@ -23,7 +23,7 @@ android {
         }
         python {
             version "3.9"
-            buildPython "C:/Python311/python.exe"
+            buildPython "/Users/sajawal/miniconda3/bin/python"
             pip {
                 // A requirement specifier, with or without a version number
                 install "requests"
@@ -66,5 +66,6 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics'
     implementation 'com.google.firebase:firebase-database:20.1.0'
     implementation 'com.opencsv:opencsv:5.2'
+    implementation 'com.google.code.gson:gson:2.10.1'
 
 }

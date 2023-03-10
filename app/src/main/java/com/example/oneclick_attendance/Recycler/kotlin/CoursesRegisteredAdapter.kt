@@ -4,17 +4,30 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.oneclick_attendance.JavaClasses.kotlin.CourseCount
 import com.example.oneclick_attendance.R
 
 
-class CoursesRegisteredAdapter (private val coursesList: ArrayList<CourseCount>):
-    RecyclerView.Adapter<CoursesRegisteredAdapter.MyViewHolder>() {
-    class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+class CoursesRegisteredAdapter (private val coursesList: ArrayList<CourseCount>,private val itemClickListener: ItemClickListener): RecyclerView.Adapter<CoursesRegisteredAdapter.MyViewHolder>() {
+    interface ItemClickListener {
+        fun onItemClick(position: Int)
+    }
+        inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+
+        init {
+            itemView.setOnClickListener {
+                if (adapterPosition >= 0) {
+                    itemClickListener.onItemClick(adapterPosition)
+                }
+            }
+        }
+
         val courseName: TextView = itemView.findViewById(R.id.courseName)
         val sectionName: TextView = itemView.findViewById(R.id.sectionID)
         val stdCount: TextView = itemView.findViewById(R.id.stdCount)
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
