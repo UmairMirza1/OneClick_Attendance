@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public class Attendance {
 
-    String Date;
+    public String Date;
     ArrayList<String> Students_list;
 
     // search this
@@ -17,4 +17,5 @@ public class Attendance {
         Students_list = students_list;
         this.video = video;
     }
+
 }
