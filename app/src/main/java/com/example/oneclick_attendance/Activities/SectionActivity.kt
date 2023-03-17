@@ -55,7 +55,6 @@ class SectionActivity : AppCompatActivity(), ListOfAttendanceAdapter.ItemClickLi
 
         newRecyclerView = findViewById(R.id.attendanceListRecycler)
         newRecyclerView.layoutManager = LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
-        Log.e("ReclyerSetup: ", attendanceList.size.toString())
         newRecyclerView.adapter = ListOfAttendanceAdapter(attendanceList,this);
     }
 
