@@ -60,7 +60,7 @@ public class NewLectureActivity extends AppCompatActivity {
     String TAG = "NewLectureActivity";
     ActivityResultLauncher<Intent> attendanceLauncher;
 
-    ArrayList<String> RegisteredStudents = new ArrayList<>();
+    List<String> RegisteredStudents = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,7 +72,9 @@ public class NewLectureActivity extends AppCompatActivity {
         String userID = getIntent().getStringExtra("userID");
         Section section = (Section) getIntent().getSerializableExtra("Section");
         Log.d(TAG, userID);
-        Log.d(TAG, section.getRegistredStudents().toString());
+
+        RegisteredStudents = section.getRegistredStudents();
+        Log.d(TAG, "val set"+RegisteredStudents.toString());
 
         attendanceLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
             @Override
@@ -118,10 +120,17 @@ public class NewLectureActivity extends AppCompatActivity {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    ApiCall();
-                    Log.d("resultfromAPi", result);
-                    Intent intent = new Intent(NewLectureActivity.this, AttendanceResultActivity.class);
-                    intent.putExtra("StudentsPresent", result);
+                    //ApiCall();
+                    ArrayList<String> students = new ArrayList<>();
+                    students.add("17L-4067");
+                    students.add("17L-4218");
+                    students.add("17L-4358");
+
+                    Log.d("resultfromAPI", students.toString());
+                    Intent intent = new Intent(NewLectureActivity.this, DetectionResultActivity.class);
+                    intent.putExtra("StudentsPresent", students);
+                    intent.putExtra("RegisteredStudents", (ArrayList<String>) RegisteredStudents);
+
                     attendanceLauncher.launch(intent);
                     runOnUiThread(new Runnable() {
                         public void run() {
