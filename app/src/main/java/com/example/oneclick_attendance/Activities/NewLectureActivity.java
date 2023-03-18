@@ -39,6 +39,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Type;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -74,14 +75,14 @@ public class NewLectureActivity extends AppCompatActivity {
         Log.d(TAG, userID);
 
         RegisteredStudents = section.getRegistredStudents();
-        Log.d(TAG, "val set"+RegisteredStudents.toString());
+        Log.d(TAG, "val set" + RegisteredStudents.toString());
 
         attendanceLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
             @Override
             public void onActivityResult(ActivityResult result) {
                 if (result.getResultCode() == RESULT_OK) {
                     Intent data = result.getData();
-                    Log.d(TAG, "onActivityResult:  result ok " );
+                    Log.d(TAG, "onActivityResult:  result ok ");
                 }
             }
         });
@@ -120,18 +121,14 @@ public class NewLectureActivity extends AppCompatActivity {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    //ApiCall();
-                    ArrayList<String> students = new ArrayList<>();
-                    students.add("17L-4067");
-                    students.add("17L-4218");
-                    students.add("17L-4358");
+                    ApiCall();
+//                    ArrayList<String> students = new ArrayList<>();
+//                    students.add("17L-4067");
+//                    students.add("17L-4218");
+//                    students.add("17L-4358");
+//
+//                    Log.d("resultfromAPI", students.toString());
 
-                    Log.d("resultfromAPI", students.toString());
-                    Intent intent = new Intent(NewLectureActivity.this, DetectionResultActivity.class);
-                    intent.putExtra("StudentsPresent", students);
-                    intent.putExtra("RegisteredStudents", (ArrayList<String>) RegisteredStudents);
-
-                    attendanceLauncher.launch(intent);
                     runOnUiThread(new Runnable() {
                         public void run() {
                             Toast.makeText(NewLectureActivity.this, result, Toast.LENGTH_LONG).show();
@@ -183,10 +180,30 @@ public class NewLectureActivity extends AppCompatActivity {
             result = Api.GetAPIData(EncodedVideo);
 
             // TODO : Send result to next activity to match with list of present students
-
+            Intent intent = new Intent(NewLectureActivity.this, DetectionResultActivity.class);
+            ArrayList<String> res = Tokenize(result);
+            Log.d("newLectureActivity", "Token: " + res);
+            intent.putExtra("StudentsPresent", res);
+            RegisteredStudents.removeIf(res::contains);
+            intent.putExtra("RegisteredStudents", (ArrayList<String>) RegisteredStudents);
+            attendanceLauncher.launch(intent);
 
             Log.i("newLectureActivity", "result from API: " + result);
         }
+    }
+
+    private ArrayList<String> Tokenize(String result) {
+
+        ArrayList<String> res = new ArrayList<>();
+
+        String[] tokens = result.split(" ");
+
+        for (String token : tokens) {
+            Log.d(TAG, "Tokenize: bolal" + token);
+            res.add(token);
+        }
+        return res;
+
     }
 
 
