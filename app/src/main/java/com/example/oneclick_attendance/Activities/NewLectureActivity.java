@@ -1,5 +1,9 @@
 package com.example.oneclick_attendance.Activities;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -24,6 +28,7 @@ import com.chaquo.python.android.AndroidPlatform;
 import android.Manifest;
 
 import com.example.oneclick_attendance.API.APIWrapper;
+import com.example.oneclick_attendance.JavaClasses.Section;
 import com.example.oneclick_attendance.R;
 import com.example.oneclick_attendance.Utils.Utility;
 import com.google.android.gms.common.api.Api;
@@ -52,13 +57,38 @@ public class NewLectureActivity extends AppCompatActivity {
 
     APIWrapper Api;
 
+    String TAG = "NewLectureActivity";
+    ActivityResultLauncher<Intent> attendanceLauncher;
+
+    List<String> RegisteredStudents = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_lecture);
         SetViews();
         Setlisteners();
+
+        String userID = getIntent().getStringExtra("userID");
+        Section section = (Section) getIntent().getSerializableExtra("Section");
+        Log.d(TAG, userID);
+
+        RegisteredStudents = section.getRegistredStudents();
+        Log.d(TAG, "val set"+RegisteredStudents.toString());
+
+        attendanceLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+            @Override
+            public void onActivityResult(ActivityResult result) {
+                if (result.getResultCode() == RESULT_OK) {
+                    Intent data = result.getData();
+                    Log.d(TAG, "onActivityResult:  result ok " );
+                }
+            }
+        });
+
         Api = new APIWrapper(this);
+
+
     }
 
 
@@ -90,16 +120,27 @@ public class NewLectureActivity extends AppCompatActivity {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    ApiCall();
+                    //ApiCall();
+                    ArrayList<String> students = new ArrayList<>();
+                    students.add("17L-4067");
+                    students.add("17L-4218");
+                    students.add("17L-4358");
+
+                    Log.d("resultfromAPI", students.toString());
+                    Intent intent = new Intent(NewLectureActivity.this, DetectionResultActivity.class);
+                    intent.putExtra("StudentsPresent", students);
+                    intent.putExtra("RegisteredStudents", (ArrayList<String>) RegisteredStudents);
+
+                    attendanceLauncher.launch(intent);
                     runOnUiThread(new Runnable() {
                         public void run() {
                             Toast.makeText(NewLectureActivity.this, result, Toast.LENGTH_LONG).show();
                         }
                     });
 
-
                 }
             }).start();
+
 
         });
 
@@ -140,6 +181,10 @@ public class NewLectureActivity extends AppCompatActivity {
             String EncodedVideo = Utility.EncodeVideo(outputStream);
             Log.d("newLectureActivity", "calling API");
             result = Api.GetAPIData(EncodedVideo);
+
+            // TODO : Send result to next activity to match with list of present students
+
+
             Log.i("newLectureActivity", "result from API: " + result);
         }
     }

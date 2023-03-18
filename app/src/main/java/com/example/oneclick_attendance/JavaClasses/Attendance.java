@@ -6,8 +6,8 @@ import java.util.ArrayList;
 
 public class Attendance {
 
-    String Date;
-    ArrayList<String> Students_list;
+    public String Date;
+    public ArrayList<String> Students_list;
 
     // search this
     Bitmap video;
@@ -17,4 +17,5 @@ public class Attendance {
         Students_list = students_list;
         this.video = video;
     }
+
 }

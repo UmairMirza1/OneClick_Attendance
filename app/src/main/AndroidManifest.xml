@@ -37,6 +37,9 @@
             android:name=".Activities.kotlin.NewSectionActivity"
             android:exported="false" />
         <activity
+            android:name=".Activities.kotlin.SectionActivity"
+            android:exported="false" />
+        <activity
             android:name=".Activities.SignInActivity"
             android:exported="true" >
             <intent-filter>
