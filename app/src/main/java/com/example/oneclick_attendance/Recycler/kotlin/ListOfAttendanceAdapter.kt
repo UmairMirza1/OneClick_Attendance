@@ -40,6 +40,6 @@ class ListOfAttendanceAdapter (private val attendanceList: ArrayList<Attendance>
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val currentItem = attendanceList[position]
-        holder.attendanceName.text = currentItem.Date + ".csv"
+        holder.attendanceName.text = currentItem.date + ".csv"
     }
 }

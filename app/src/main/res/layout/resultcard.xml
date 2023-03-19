@@ -14,23 +14,15 @@
         android:paddingLeft="5dp"
         >
 
-        <TextView
-            android:id="@+id/std_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/black"
-            android:text="TextView"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            tools:text="Sajawal Ali" />
+
 
         <TextView
             android:id="@+id/std_rollNo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/black"
-            android:text="19L-2346"
-            android:textSize="14sp" />
+
+            android:textSize="20sp" />
     </LinearLayout>
 
     <androidx.appcompat.widget.AppCompatButton
@@ -39,8 +31,7 @@
         android:layout_height="30dp"
         android:layout_gravity="center"
         android:background="@drawable/roundedbutton"
-        android:backgroundTint="@color/green"
         android:textSize="10sp"
-        android:text="Present" />
+         />
 
 </LinearLayout>

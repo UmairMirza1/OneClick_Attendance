@@ -83,7 +83,9 @@ public class TeacherFirebaseDAO implements ITeacherDao {
         myRef.child("Teachers").child(teacher.getUID()).setValue(teacher);
     }
     @Override
-    public void saveAttendance(Attendance attendance) {
+    public void saveAttendance(Attendance attendance, String sectionId, String userId) {
+
+        myRef.child("Teachers").child(userId).child("Sections").child(sectionId).child("Attendance").child(attendance.getDate()).setValue(attendance);
 
     }
 

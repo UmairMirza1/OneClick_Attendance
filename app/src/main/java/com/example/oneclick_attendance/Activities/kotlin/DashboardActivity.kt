@@ -5,12 +5,10 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Button
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.oneclick_attendance.Activities.kotlin.SectionActivity
 import com.example.oneclick_attendance.DB.TeacherFirebaseDAO
 import com.example.oneclick_attendance.Interface.ITeacherDao
 import com.example.oneclick_attendance.JavaClasses.Section
@@ -19,6 +17,8 @@ import com.example.oneclick_attendance.R
 import com.example.oneclick_attendance.Recycler.DashboardAdapter
 import com.example.oneclick_attendance.Recycler.kotlin.CoursesRegisteredAdapter
 import com.example.oneclick_attendance.ViewModel.DashboardViewModel
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import java.io.Serializable
 import java.util.Objects.isNull
 
@@ -41,13 +41,16 @@ class DashboardActivity : AppCompatActivity(), CoursesRegisteredAdapter.ItemClic
     private var sectionsList: ArrayList<Section> = ArrayList<Section>()
     private lateinit var teacherFirebase: TeacherFirebaseDAO
 
-
+    private var auth : FirebaseAuth = FirebaseAuth.getInstance()
     override fun onCreate(savedInstanceState: Bundle?) {
         teacherFirebase = TeacherFirebaseDAO(TeacherFirebaseDAO.observer { })
 
 
         var details = java.util.ArrayList<java.util.ArrayList<String>>()
-        userId =intent.getStringExtra("UserId")
+        //userId =intent.getStringExtra("UserId")
+
+        val user: FirebaseUser = auth.getCurrentUser()!!
+        userId = user!!.uid
         teacherFirebase.loadTeacherSections(
             object : DataCallBack {
                 override fun onResponce(listofSection: ArrayList<Section>){
@@ -64,7 +67,7 @@ class DashboardActivity : AppCompatActivity(), CoursesRegisteredAdapter.ItemClic
                     // let's refresh data
                     getTeacherCourses()
 
-                    dataFromIntent
+                    //dataFromIntent
                     SetViews()
                     SetVmAndRv()
 
