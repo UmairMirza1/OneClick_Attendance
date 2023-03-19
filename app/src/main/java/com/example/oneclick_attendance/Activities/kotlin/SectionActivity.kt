@@ -29,16 +29,13 @@ class SectionActivity : AppCompatActivity() {
     var TAG = "SectionActivityTest"
     var Rv : RecyclerView? = null;
     private lateinit var teacherFirebase: TeacherFirebaseDAO
-
+    var AttendanceList: ArrayList<Attendance> = ArrayList<Attendance>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_section)
 
         courseTitle = findViewById(R.id.courseTitle)
-
-
-
 
         val section = intent.extras?.get("selected_section") as Section
         userId = intent.extras?.get("userID") as String
@@ -50,25 +47,14 @@ class SectionActivity : AppCompatActivity() {
         teacherFirebase = TeacherFirebaseDAO(TeacherFirebaseDAO.observer { })
         teacherFirebase.loadSectionAttendance(
             object : CB_Attendance {
-                override fun onResponse(listofSection: ArrayList<Attendance>){
-                    Log.e("lengthOfSections: ",listofSection.size.toString())
-                    // print all the sections
-//                    for (section in listofSection) {
-//                        coursesNameList.add(section.name)
-//                        sectionNameList.add(section.courseCode)
-//                        if (!Objects.isNull(section.registredStudents))
-//                            stdCountList.add(section.registredStudents.size.toString())
-//                        sectionsList.add(section)
-//                    }
+                override fun onResponse(listOfAttendance: ArrayList<Attendance>){
+                    Log.e("NumberOfAttendances: ",listOfAttendance.size.toString())
+               //      print all the sections
+                    for (attendance in listOfAttendance) {
+                        AttendanceList.add(attendance)
+                        Log.e("Attendance: ",attendance.toString())
 
-//                    // let's refresh data
-//                    getTeacherCourses()
-//
-//                    //dataFromIntent
-//
-//                    SetViews()
-//                    SetVmAndRv()
-
+                    }
                 }
             }, section.courseCode , userId
         );
@@ -96,6 +82,6 @@ class SectionActivity : AppCompatActivity() {
 
     interface CB_Attendance{
         //        fun onResponce(listOfCourses: java.util.ArrayList<java.util.ArrayList<String>>)
-        fun onResponse(listofSection: ArrayList<Attendance>)
+        fun onResponse(listOfAttendance: ArrayList<Attendance>)
     }
 }
