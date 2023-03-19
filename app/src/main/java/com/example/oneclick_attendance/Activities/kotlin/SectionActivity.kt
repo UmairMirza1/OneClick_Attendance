@@ -44,6 +44,7 @@ class SectionActivity : AppCompatActivity() {
                 Log.d(TAG, "onCreate: SectionActivityTest)");
             }
         }
+
         teacherFirebase = TeacherFirebaseDAO(TeacherFirebaseDAO.observer { })
         teacherFirebase.loadSectionAttendance(
             object : CB_Attendance {
@@ -59,12 +60,7 @@ class SectionActivity : AppCompatActivity() {
             }, section.courseCode , userId
         );
 
-
-
         Rv = findViewById(R.id.attendanceListRecycler);
-
-
-
 
         courseTitle.text = section.courseName
         NewLec = findViewById(R.id.new_lec_btn)

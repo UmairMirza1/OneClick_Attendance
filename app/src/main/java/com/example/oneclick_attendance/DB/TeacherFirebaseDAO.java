@@ -134,7 +134,6 @@ public class TeacherFirebaseDAO implements ITeacherDao {
 
         myRef = database.getReference("OneClick").child("Teachers").child(userId).child("Sections").child(sectionId).child("Attendance");
 
-
         ArrayList<Attendance> Attendances = new ArrayList<Attendance>();
 
         myRef.addValueEventListener(new ValueEventListener() {
