@@ -14,6 +14,9 @@ public class Attendance {
     // search this
    //Bitmap video;
 
+    public Attendance() {
+    }
+
     public Attendance(ArrayList<String> students_list) {
         //set date to todays date
         date = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(System.currentTimeMillis());
