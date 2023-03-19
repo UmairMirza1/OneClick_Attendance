@@ -12,7 +12,7 @@ public interface ITeacherDao {
     //void saveTeacher(Hashtable<String, String> teacher);
 
     void saveTeacher(Teacher teacher);
-    void saveAttendance(Attendance attendance);
+    void saveAttendance(Attendance attendance, String sectionId, String userId);
 
     void addSection(String userId, Section section);
 

@@ -85,11 +85,13 @@ class NewSectionActivity : AppCompatActivity() {
 
         SaveSection?.setOnClickListener {
             Toast.makeText(this, "Section Saved", Toast.LENGTH_SHORT).show();
-            Section = Section(courseName?.text.toString(), courseCode?.text.toString(), ListOfStudents);
+            Section =
+                Section(courseName?.text.toString(), courseCode?.text.toString(), ListOfStudents);
 
-        Log.d("csvresult", "check section list of students: ${Section.registredStudents}");
-        ITeacherDao?.addSection(userID, Section);
-
+            Log.d("csvresult", "check section list of students: ${Section.registredStudents}");
+            ITeacherDao?.addSection(userID, Section);
+            val intent = Intent(this, DashboardActivity::class.java)
+            startActivity(intent)
         }
     }
 

@@ -8,41 +8,28 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Base64;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.Toast;
 import android.widget.VideoView;
 
-import com.chaquo.python.PyObject;
-import com.chaquo.python.Python;
-import com.chaquo.python.android.AndroidPlatform;
-
 import android.Manifest;
 
 import com.example.oneclick_attendance.API.APIWrapper;
+import com.example.oneclick_attendance.Activities.kotlin.DetectionResultActivity;
 import com.example.oneclick_attendance.JavaClasses.Section;
 import com.example.oneclick_attendance.R;
 import com.example.oneclick_attendance.Utils.Utility;
-import com.google.android.gms.common.api.Api;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.Type;
-import java.nio.file.Files;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class NewLectureActivity extends AppCompatActivity {
@@ -63,6 +50,7 @@ public class NewLectureActivity extends AppCompatActivity {
 
     List<String> RegisteredStudents = new ArrayList<>();
 
+    Section section;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,7 +59,7 @@ public class NewLectureActivity extends AppCompatActivity {
         Setlisteners();
 
         String userID = getIntent().getStringExtra("userID");
-        Section section = (Section) getIntent().getSerializableExtra("Section");
+        section = (Section) getIntent().getSerializableExtra("Section");
         Log.d(TAG, userID);
 
         RegisteredStudents = section.getRegistredStudents();
@@ -122,13 +110,6 @@ public class NewLectureActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     ApiCall();
-//                    ArrayList<String> students = new ArrayList<>();
-//                    students.add("17L-4067");
-//                    students.add("17L-4218");
-//                    students.add("17L-4358");
-//
-//                    Log.d("resultfromAPI", students.toString());
-
                     runOnUiThread(new Runnable() {
                         public void run() {
                             Toast.makeText(NewLectureActivity.this, result, Toast.LENGTH_LONG).show();
@@ -184,6 +165,7 @@ public class NewLectureActivity extends AppCompatActivity {
             ArrayList<String> res = Tokenize(result);
             Log.d("newLectureActivity", "Token: " + res);
             intent.putExtra("StudentsPresent", res);
+            intent.putExtra("courseCode", section.getCourseCode());
             RegisteredStudents.removeIf(res::contains);
             intent.putExtra("RegisteredStudents", (ArrayList<String>) RegisteredStudents);
             attendanceLauncher.launch(intent);
