@@ -2,11 +2,12 @@ package com.example.oneclick_attendance.JavaClasses;
 
 import android.graphics.Bitmap;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Locale;
 
-public class Attendance {
+public class Attendance implements Serializable {
 
     public String date;
     public ArrayList<String> studentsList;
