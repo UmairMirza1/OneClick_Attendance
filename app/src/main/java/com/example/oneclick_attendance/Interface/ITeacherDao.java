@@ -1,6 +1,7 @@
 package com.example.oneclick_attendance.Interface;
 
 import com.example.oneclick_attendance.Activities.kotlin.DashboardActivity;
+import com.example.oneclick_attendance.Activities.kotlin.SectionActivity;
 import com.example.oneclick_attendance.JavaClasses.Attendance;
 import com.example.oneclick_attendance.JavaClasses.Section;
 import com.example.oneclick_attendance.JavaClasses.Teacher;
@@ -17,4 +18,6 @@ public interface ITeacherDao {
     void addSection(String userId, Section section);
 
     void loadTeacherSections(DashboardActivity.DataCallBack callback, String usrId);
+
+    void loadSectionAttendance(SectionActivity.CB_Attendance callback, String sectionId, String userId);
 }

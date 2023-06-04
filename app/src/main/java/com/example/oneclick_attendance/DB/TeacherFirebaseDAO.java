@@ -5,6 +5,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.example.oneclick_attendance.Activities.kotlin.DashboardActivity;
+import com.example.oneclick_attendance.Activities.kotlin.SectionActivity;
 import com.example.oneclick_attendance.Interface.ITeacherDao;
 import com.example.oneclick_attendance.JavaClasses.Attendance;
 import com.example.oneclick_attendance.JavaClasses.Section;
@@ -126,6 +127,39 @@ public class TeacherFirebaseDAO implements ITeacherDao {
             }
         });
         //Log.e("data", String.valueOf(data.toArray().length));
+    }
+
+    @Override
+    public void loadSectionAttendance(SectionActivity.CB_Attendance callback, String sectionId, String userId) {
+
+        myRef = database.getReference("OneClick").child("Teachers").child(userId).child("Sections").child(sectionId).child("Attendance");
+
+        ArrayList<Attendance> Attendances = new ArrayList<Attendance>();
+
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                try {
+                    for (DataSnapshot d : dataSnapshot.getChildren()) {
+                        Attendance Attend = d.getValue(Attendance.class);
+                        assert Attend != null;
+                        Attendances.add(Attend);
+                        Log.d("firebasedb", "onDataChange: "  + Attend.getStudentsList().toString());
+                    }
+                    // observer.update();
+                    callback.onResponse(Attendances);
+                }
+                catch (Exception ex) {
+                    Log.e("firebasedb", ex.getMessage());
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.w("firebasedb", "Failed to read value.", error.toException());
+            }
+        });
+
     }
 
 }

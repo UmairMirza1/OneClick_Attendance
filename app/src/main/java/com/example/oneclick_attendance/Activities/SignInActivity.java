@@ -71,6 +71,7 @@ public class SignInActivity extends AppCompatActivity {
                 //Toast.makeText(this, userId, Toast.LENGTH_LONG).show();
                 intent.putExtra("UserId", userId);
                 startActivity(intent);
+                finish();
             } else {
                 Exception ex = res.getException();
                 String message = "";

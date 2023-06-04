@@ -99,6 +99,8 @@ class DashboardActivity : AppCompatActivity(), CoursesRegisteredAdapter.ItemClic
         intent.putExtra("userID",userId)
         startActivity(intent)
     }
+
+
     // to deal with asynchronous db calls we need callback function
     interface DataCallBack {
         //        fun onResponce(listOfCourses: java.util.ArrayList<java.util.ArrayList<String>>)
