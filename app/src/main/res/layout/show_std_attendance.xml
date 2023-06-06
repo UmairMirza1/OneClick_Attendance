@@ -1,39 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:background="@drawable/create_account_bg"
-    android:orientation="horizontal"
+    android:orientation="vertical"
     android:layout_height="match_parent">
 
-
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="20dp"
+        android:orientation="vertical">
     <TextView
         android:id="@+id/title_lecAttendance"
         android:layout_width="match_parent"
-        android:layout_height="78dp"
-        android:layout_marginEnd="103dp"
-        android:padding="20dp"
-        android:text="Attendance List"
+        android:layout_height="wrap_content"
+
+        android:text="Attendance"
         android:textColor="@color/white"
         android:textSize="36sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
+        android:textStyle="bold" />
+    <TextView
+        android:id="@+id/attendance_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Attendance Name"
+        android:textSize="24sp"
+        />
+    </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/stdsAttendanceRecycler"
+        android:id="@+id/stdAttendanceRecycler"
         android:layout_width="322dp"
-        android:layout_height="442dp"
+        android:layout_height="422dp"
         android:layout_gravity="center"
-        android:layout_marginBottom="108dp"
+        android:layout_marginBottom="40dp"
+        android:padding="30dp"
         android:background="@drawable/rounded_white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        >
 
     </androidx.recyclerview.widget.RecyclerView>
 
+    <LinearLayout
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:orientation="horizontal">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/courseName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="24sp"
+            android:text="CourseName"/>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/attendanceModifyBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="@drawable/rounded_white"
+        android:text="Submit"
+        android:textColor="@color/goodColor"
+        android:textSize="20dp"
+         >
+    </androidx.appcompat.widget.AppCompatButton>
+
+        </LinearLayout>
+
+</LinearLayout>

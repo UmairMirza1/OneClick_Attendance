@@ -33,14 +33,15 @@ class SectionActivity : AppCompatActivity(),ListOfAttendanceAdapter.ItemClickLis
     lateinit var attendanceListRecycler:RecyclerView;
     private lateinit var teacherFirebase: TeacherFirebaseDAO
     var AttendanceList: ArrayList<Attendance> = ArrayList<Attendance>()
+    lateinit var section: Section;
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+        override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_section)
 
         courseTitle = findViewById(R.id.courseTitle)
 
-        val section = intent.extras?.get("selected_section") as Section
+        section = intent.extras?.get("selected_section") as Section
         userId = intent.extras?.get("userID") as String
         attendanceLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
@@ -79,6 +80,7 @@ class SectionActivity : AppCompatActivity(),ListOfAttendanceAdapter.ItemClickLis
 
 
         }
+
     }
 
     interface CB_Attendance{
@@ -89,7 +91,9 @@ class SectionActivity : AppCompatActivity(),ListOfAttendanceAdapter.ItemClickLis
     override fun onItemClick(position: Int) {
         val intent = Intent(this, show_std_attendance::class.java)
         intent.putExtra("selected_attendance", AttendanceList[position] as Serializable)
+        intent.putExtra("section", section as Section)
         intent.putExtra("userID",userId)
         startActivity(intent)
     }
+
 }
