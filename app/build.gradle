@@ -23,7 +23,7 @@ android {
         }
         python {
             version "3.9"
-            buildPython "/Users/sajawal/miniconda3/bin/python"
+            buildPython "C:/Users/BoomerMirza/AppData/Local/Programs/Python/Python311/python"
             pip {
                 // A requirement specifier, with or without a version number
                 install "requests"

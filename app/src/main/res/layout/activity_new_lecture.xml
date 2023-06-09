@@ -9,6 +9,7 @@
     android:padding="40dp"
     android:background="@drawable/new_lecture_bg">
 
+
     <TextView
         android:id="@+id/title"
         android:layout_width="wrap_content"
@@ -106,5 +107,22 @@
             />
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/progressLayout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:visibility="gone">  <!-- Make it invisible initially -->
+
+        <ProgressBar
+            android:id="@+id/progressBar_"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
 
 </LinearLayout>
+
+
+
