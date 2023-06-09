@@ -14,7 +14,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 import android.widget.VideoView;
 
@@ -37,15 +40,21 @@ public class NewLectureActivity extends AppCompatActivity {
     private static final int SELECT_PHOTO = 150;
     Button Proceed, Cancel, Camera, Browse;
 
+    ProgressBar progressBar;
     VideoView video;
 
+    LinearLayout progressBarLayout;
     Uri videoUri;
+
+    ArrayList<Uri> videoUriArrays;
 
     String result;
 
     APIWrapper Api;
 
     String TAG = "NewLectureActivity";
+
+    int videoIndex = 0;
     ActivityResultLauncher<Intent> attendanceLauncher;
 
     List<String> RegisteredStudents = new ArrayList<>();
@@ -58,6 +67,8 @@ public class NewLectureActivity extends AppCompatActivity {
         SetViews();
         Setlisteners();
 
+
+        videoUriArrays = new ArrayList<>();
         String userID = getIntent().getStringExtra("userID");
         section = (Section) getIntent().getSerializableExtra("Section");
         Log.d(TAG, userID);
@@ -88,6 +99,8 @@ public class NewLectureActivity extends AppCompatActivity {
         Camera = findViewById(R.id.Camera);
         Browse = findViewById(R.id.Browse);
         video = findViewById(R.id.lectureVideo);
+        progressBar = findViewById(R.id.progressBar_);
+        progressBarLayout = findViewById( R.id.progressLayout);
 
     }
 
@@ -105,7 +118,7 @@ public class NewLectureActivity extends AppCompatActivity {
             }
 
             Toast.makeText(this, "Proceed", Toast.LENGTH_SHORT).show();
-
+            progressBarLayout.setVisibility(View.VISIBLE);
             new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -125,14 +138,14 @@ public class NewLectureActivity extends AppCompatActivity {
 
         Cancel.setOnClickListener(v -> {
             Toast.makeText(this, "Cancel", Toast.LENGTH_SHORT).show();
-            // TODO: Send cancelled result to calling  activity
+            // TODO: Send cancelled result to calling activity
         });
-
 
         Camera.setOnClickListener(v -> {
             Toast.makeText(this, "Camera", Toast.LENGTH_SHORT).show();
             getCameraPermission();
             Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+            intent.putExtra(android.provider.MediaStore.EXTRA_VIDEO_QUALITY, 0);
             startActivityForResult(intent, REQUEST_VIDEO_CAPTURE);
 
         });
@@ -148,6 +161,7 @@ public class NewLectureActivity extends AppCompatActivity {
 
 
     private void ApiCall() {
+
         ByteArrayOutputStream outputStream;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             try (InputStream inputStream = getContentResolver().openInputStream(videoUri)) {
@@ -164,6 +178,7 @@ public class NewLectureActivity extends AppCompatActivity {
             Intent intent = new Intent(NewLectureActivity.this, DetectionResultActivity.class);
             ArrayList<String> res = Tokenize(result);
             Log.d("newLectureActivity", "Token: " + res);
+
             intent.putExtra("StudentsPresent", res);
             intent.putExtra("courseCode", section.getCourseCode());
             RegisteredStudents.removeIf(res::contains);
@@ -194,9 +209,13 @@ public class NewLectureActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, intent);
         if (requestCode == REQUEST_VIDEO_CAPTURE && resultCode == RESULT_OK) {
             Log.i("bolal", "onActivityResult: Video saved to: " + intent.getData());
+
             videoUri = intent.getData();
-            video.setVideoURI(videoUri);
+            videoUriArrays.add(videoUri);
+            video.setVideoURI(videoUriArrays.get(videoIndex));
+            videoIndex++;
             video.start();
+            Camera.setText("Another?");
 
         }
         if (requestCode == REQUEST_VIDEO_CAPTURE && resultCode == RESULT_CANCELED) {

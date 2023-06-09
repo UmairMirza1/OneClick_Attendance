@@ -5,13 +5,20 @@ import android.util.Base64;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
 
 public class Utility {
+    public static final int CHUNK_SIZE = 1024;
 
-
-    public static void ParseCSV(){
+    public static void ParseCSV() {
 
     }
+
+
+    public static String encodeVideoChunk(byte[] chunk) {
+        return Base64.encodeToString(chunk, 0);
+    }
+
 
     public static ByteArrayOutputStream getByteArrayOutputStream(InputStream inputStream) {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -28,7 +35,7 @@ public class Utility {
         return outputStream;
     }
 
-   public static String EncodeVideo( ByteArrayOutputStream outputStream)
+       public static String EncodeVideo( ByteArrayOutputStream outputStream)
 
    {
        byte[] data = outputStream.toByteArray();
@@ -39,6 +46,19 @@ public class Utility {
        return "data:video/mp4;base64," + encoded;
 
    }
+    public static String encodeVideo(ByteArrayOutputStream outputStream) {
+        byte[] data = outputStream.toByteArray();
+        StringBuilder sb = new StringBuilder();
 
+        for (int i = 0; i < data.length; i += CHUNK_SIZE) {
+            int end = Math.min(data.length, i + CHUNK_SIZE);
+            byte[] chunk = Arrays.copyOfRange(data, i, end);
+
+            String encodedChunk = encodeVideoChunk(chunk);
+            sb.append(encodedChunk);
+        }
+
+        return "data:video/mp4;base64," + sb.toString();
+    }
 
 }
