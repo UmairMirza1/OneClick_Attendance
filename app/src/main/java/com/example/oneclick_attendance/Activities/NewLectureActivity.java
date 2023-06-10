@@ -40,6 +40,7 @@ public class NewLectureActivity extends AppCompatActivity {
     private static final int SELECT_PHOTO = 150;
     Button Proceed, Cancel, Camera, Browse;
 
+    Button prev , next ;
     ProgressBar progressBar;
     VideoView video;
 
@@ -101,6 +102,8 @@ public class NewLectureActivity extends AppCompatActivity {
         video = findViewById(R.id.lectureVideo);
         progressBar = findViewById(R.id.progressBar_);
         progressBarLayout = findViewById( R.id.progressLayout);
+        prev = findViewById(R.id.buttonPrev);
+        next = findViewById(R.id.buttonNext);
 
     }
 
@@ -157,6 +160,31 @@ public class NewLectureActivity extends AppCompatActivity {
         });
 
 
+        prev.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (videoIndex > 0) {
+                    videoIndex--;
+                    Log.i("bolal", "playing video " + videoUriArrays.get(videoIndex));
+                    video.setVideoURI(videoUriArrays.get(videoIndex));
+                    video.start();
+                }
+            }
+        });
+
+
+        next.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (videoIndex < videoUriArrays.size() - 1) {
+                    videoIndex++;
+                    Log.i("bolal", "playing video " + videoUriArrays.get(videoIndex));
+                    video.setVideoURI(videoUriArrays.get(videoIndex));
+                    video.start();
+                }
+            }
+        });
+
     }
 
 
@@ -174,7 +202,7 @@ public class NewLectureActivity extends AppCompatActivity {
             Log.d("newLectureActivity", "calling API");
             result = Api.GetAPIData(EncodedVideo);
 
-            // TODO : Send result to next activity to match with list of present students
+
             Intent intent = new Intent(NewLectureActivity.this, DetectionResultActivity.class);
             ArrayList<String> res = Tokenize(result);
             Log.d("newLectureActivity", "Token: " + res);
