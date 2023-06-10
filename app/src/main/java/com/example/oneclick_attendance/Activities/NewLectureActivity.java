@@ -40,7 +40,7 @@ public class NewLectureActivity extends AppCompatActivity {
     private static final int SELECT_PHOTO = 150;
     Button Proceed, Cancel, Camera, Browse;
 
-    Button prev , next ;
+    Button prev, next;
     ProgressBar progressBar;
     VideoView video;
 
@@ -55,12 +55,14 @@ public class NewLectureActivity extends AppCompatActivity {
 
     String TAG = "NewLectureActivity";
 
-    int videoIndex = 0;
+    int videoIndex = -1;
     ActivityResultLauncher<Intent> attendanceLauncher;
 
+    ArrayList<String> allVideosResults;
     List<String> RegisteredStudents = new ArrayList<>();
 
     Section section;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,7 +70,7 @@ public class NewLectureActivity extends AppCompatActivity {
         SetViews();
         Setlisteners();
 
-
+        allVideosResults = new ArrayList<>();
         videoUriArrays = new ArrayList<>();
         String userID = getIntent().getStringExtra("userID");
         section = (Section) getIntent().getSerializableExtra("Section");
@@ -101,7 +103,7 @@ public class NewLectureActivity extends AppCompatActivity {
         Browse = findViewById(R.id.Browse);
         video = findViewById(R.id.lectureVideo);
         progressBar = findViewById(R.id.progressBar_);
-        progressBarLayout = findViewById( R.id.progressLayout);
+        progressBarLayout = findViewById(R.id.progressLayout);
         prev = findViewById(R.id.buttonPrev);
         next = findViewById(R.id.buttonNext);
 
@@ -129,6 +131,7 @@ public class NewLectureActivity extends AppCompatActivity {
                     runOnUiThread(new Runnable() {
                         public void run() {
                             Toast.makeText(NewLectureActivity.this, result, Toast.LENGTH_LONG).show();
+                            progressBarLayout.setVisibility(View.VISIBLE);
                         }
                     });
 
@@ -188,33 +191,77 @@ public class NewLectureActivity extends AppCompatActivity {
     }
 
 
-    private void ApiCall() {
+    private void getModelResult() {
 
         ByteArrayOutputStream outputStream;
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            try (InputStream inputStream = getContentResolver().openInputStream(videoUri)) {
-                outputStream = Utility.getByteArrayOutputStream(inputStream);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-
-            String EncodedVideo = Utility.EncodeVideo(outputStream);
-            Log.d("newLectureActivity", "calling API");
-            result = Api.GetAPIData(EncodedVideo);
-
-
-            Intent intent = new Intent(NewLectureActivity.this, DetectionResultActivity.class);
-            ArrayList<String> res = Tokenize(result);
-            Log.d("newLectureActivity", "Token: " + res);
-
-            intent.putExtra("StudentsPresent", res);
-            intent.putExtra("courseCode", section.getCourseCode());
-            RegisteredStudents.removeIf(res::contains);
-            intent.putExtra("RegisteredStudents", (ArrayList<String>) RegisteredStudents);
-            attendanceLauncher.launch(intent);
-
-            Log.i("newLectureActivity", "result from API: " + result);
+        try (InputStream inputStream = getContentResolver().openInputStream(videoUri)) {
+            outputStream = Utility.getByteArrayOutputStream(inputStream);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
+        String EncodedVideo = Utility.EncodeVideo(outputStream);
+        Log.d("newLectureActivity", "calling API");
+
+        result = Api.GetAPIData(EncodedVideo);
+        ArrayList<String> res = Tokenize(result);
+        // add res in allvideosresults and removing the overlap
+        for (String s : res) {
+            if (!allVideosResults.contains(s)) {
+                allVideosResults.add(s);
+            }
+        }
+
+    }
+
+    private void callNextActivityWithResults() {
+
+        Intent intent = new Intent(NewLectureActivity.this, DetectionResultActivity.class);
+        //ArrayList<String> res = Tokenize(result);
+       // Log.d("newLectureActivity", "Token: " + res);
+
+
+
+        intent.putExtra("StudentsPresent", allVideosResults);
+        intent.putExtra("courseCode", section.getCourseCode());
+        RegisteredStudents.removeIf(allVideosResults::contains);
+        intent.putExtra("RegisteredStudents", (ArrayList<String>) RegisteredStudents);
+        attendanceLauncher.launch(intent);
+
+    }
+
+    private void ApiCall() {
+
+//        ByteArrayOutputStream outputStream;
+//        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+//            try (InputStream inputStream = getContentResolver().openInputStream(videoUri)) {
+//                outputStream = Utility.getByteArrayOutputStream(inputStream);
+//            } catch (IOException e) {
+//                throw new RuntimeException(e);
+//            }
+//
+//            String EncodedVideo = Utility.EncodeVideo(outputStream);
+//            Log.d("newLectureActivity", "calling API");
+//            result = Api.GetAPIData(EncodedVideo);
+
+
+//            Intent intent = new Intent(NewLectureActivity.this, DetectionResultActivity.class);
+//            ArrayList<String> res = Tokenize(result);
+//            Log.d("newLectureActivity", "Token: " + res);
+//            intent.putExtra("StudentsPresent", res);
+//            intent.putExtra("courseCode", section.getCourseCode());
+//            RegisteredStudents.removeIf(res::contains);
+//            intent.putExtra("RegisteredStudents", (ArrayList<String>) RegisteredStudents);
+//            attendanceLauncher.launch(intent);
+
+        for (int i = 0; i < videoUriArrays.size(); i++) {
+            videoUri = videoUriArrays.get(i);
+            getModelResult();
+        }
+        Log.i("newLectureActivity", "All results " + result);
+        callNextActivityWithResults();
+
+
+        // }
     }
 
     private ArrayList<String> Tokenize(String result) {
@@ -240,10 +287,12 @@ public class NewLectureActivity extends AppCompatActivity {
 
             videoUri = intent.getData();
             videoUriArrays.add(videoUri);
-            video.setVideoURI(videoUriArrays.get(videoIndex));
             videoIndex++;
+            video.setVideoURI(videoUriArrays.get(videoIndex));
+
             video.start();
-            Camera.setText("Another?");
+            Camera.setText("More Videos?");
+            Camera.setTextSize(8);
 
         }
         if (requestCode == REQUEST_VIDEO_CAPTURE && resultCode == RESULT_CANCELED) {
@@ -253,8 +302,13 @@ public class NewLectureActivity extends AppCompatActivity {
         if (requestCode == SELECT_PHOTO && resultCode == RESULT_OK) {
             Log.i("bolal", "onActivityResult: Video saved to: " + intent.getData());
             videoUri = intent.getData();
-            video.setVideoURI(videoUri);
+            videoUriArrays.add(videoUri);
+            videoIndex++;
+            video.setVideoURI(videoUriArrays.get(videoIndex));
+
             video.start();
+            Browse.setText("Choose Again?");
+            Browse.setTextSize(8);
 
         }
     }
