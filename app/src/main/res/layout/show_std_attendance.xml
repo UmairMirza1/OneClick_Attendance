@@ -10,7 +10,12 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="horizontal">
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:padding="20dp"
+        android:layout_weight="1"
         android:orientation="vertical">
     <TextView
         android:id="@+id/title_lecAttendance"
@@ -28,7 +33,18 @@
         android:text="Attendance Name"
         android:textSize="24sp"
         />
+
     </LinearLayout>
+        <TextView
+            android:id="@+id/courseName"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textColor="@color/white"
+            android:textSize="24sp"
+            android:text="SMD"/>
+</LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/stdAttendanceRecycler"
@@ -49,22 +65,27 @@
         android:paddingRight="10dp"
         android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/courseName"
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/export_csv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textSize="24sp"
-            android:text="CourseName"/>
-
+            android:layout_marginRight="10dp"
+            android:background="@drawable/roundedbutton"
+            android:text="Export"
+            android:textColor="@color/badColor"
+            android:textSize="20dp"
+            >
+        </androidx.appcompat.widget.AppCompatButton>
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/attendanceModifyBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
         android:layout_weight="1"
-        android:background="@drawable/rounded_white"
+        android:background="@drawable/roundedbutton"
         android:text="Submit"
-        android:textColor="@color/goodColor"
+        android:textColor="@color/white"
         android:textSize="20dp"
          >
     </androidx.appcompat.widget.AppCompatButton>

@@ -1,13 +1,25 @@
 package com.example.oneclick_attendance.Activities.kotlin
 
 
+import android.Manifest.permission.READ_EXTERNAL_STORAGE
+import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+import android.accessibilityservice.GestureDescription
+import android.content.DialogInterface
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.os.Environment
+import android.provider.Settings
 import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
+import androidx.activity.result.PickVisualMediaRequest
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.oneclick_attendance.DB.TeacherFirebaseDAO
@@ -15,9 +27,13 @@ import com.example.oneclick_attendance.Interface.ITeacherDao
 import com.example.oneclick_attendance.JavaClasses.Attendance
 import com.example.oneclick_attendance.JavaClasses.Section
 import com.example.oneclick_attendance.JavaClasses.StudResObj
+import com.example.oneclick_attendance.JavaClasses.kotlin.CSVConvert
 import com.example.oneclick_attendance.R
 import com.example.oneclick_attendance.Recycler.kotlin.DetectionResultAdapter
-import org.w3c.dom.Text
+import com.google.android.gms.common.api.GoogleApi
+import org.apache.commons.lang3.builder.Builder
+import java.io.File
+
 
 class show_std_attendance: AppCompatActivity() {
     lateinit var formulateAttendance: ArrayList<StudResObj>;
@@ -29,6 +45,9 @@ class show_std_attendance: AppCompatActivity() {
     var NotPresent: MutableList<String>? = null
     var present: ArrayList<String>? = null
     val TAG = "ShowAttendActivity"
+    val csvConverter = CSVConvert()
+    lateinit var csvString: String;
+    private var exportBtn: Button? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,6 +55,8 @@ class show_std_attendance: AppCompatActivity() {
         setContentView(R.layout.show_std_attendance)
         //submit btn
         saveButton = findViewById(R.id.attendanceModifyBtn)
+
+        exportBtn = findViewById(R.id.export_csv)
 
         attendName = findViewById(R.id.attendance_name)
 
@@ -74,6 +95,23 @@ class show_std_attendance: AppCompatActivity() {
         })
 
 
+        exportBtn?.setOnClickListener {
+            val path = getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)
+            val letDirectory = File(path, "attendances")
+            letDirectory.mkdirs()
+            Log.e("path: ",letDirectory.toString())
+            var fileName = section.courseName + "_" + attendance.getDate() + ".csv"
+            //formulate CSV File!
+            convertIntoCsv();
+
+            val file = File(letDirectory, fileName)
+            // write to the created file
+            file.appendText(csvString)
+
+        }
+
+
+
         newRecyclerView = findViewById(R.id.stdAttendanceRecycler)
         newRecyclerView.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
@@ -106,5 +144,16 @@ class show_std_attendance: AppCompatActivity() {
             .forEach { std -> formulateAttendance.add(StudResObj(std, false)) }
 
         presentStds.toList().forEach { std -> formulateAttendance.add(StudResObj(std, true)) }
+
     }
+
+    fun convertIntoCsv(){
+        csvString = csvConverter.csvOf(listOf("RollNo", "Status"), formulateAttendance){
+            listOf(it.rollNo.toString(), it.isPresent.toString())
+        }
+    }
+
+
+
+
 }

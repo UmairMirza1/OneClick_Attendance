@@ -3,6 +3,7 @@ plugins {
     id 'com.google.gms.google-services'
     id 'com.chaquo.python'
     id 'kotlin-android'
+    id 'org.jetbrains.kotlin.android'
 }
 
 android {
@@ -23,7 +24,7 @@ android {
         }
         python {
             version "3.9"
-            buildPython "C:/Users/BoomerMirza/AppData/Local/Programs/Python/Python311/python"
+            buildPython "/Users/sajawal/miniconda3/bin/python"
             pip {
                 // A requirement specifier, with or without a version number
                 install "requests"
@@ -59,6 +60,9 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.5.1'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1'
+    implementation 'androidx.core:core-ktx:1.8.0'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
