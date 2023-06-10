@@ -12,6 +12,7 @@ def fun(TeacherID, Video ,Image ):
             }).json()
 
             data = response["data"]
+            print(data[0])
             return data[0]
         except Exception as e:
             return e
