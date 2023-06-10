@@ -14,6 +14,7 @@ public interface ITeacherDao {
 
     void saveTeacher(Teacher teacher);
     void saveAttendance(Attendance attendance, String sectionId, String userId);
+    void deleteAttendance(Attendance attendance, String sectionId, String userId);
 
     void addSection(String userId, Section section);
 

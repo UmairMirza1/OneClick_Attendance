@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -65,8 +66,11 @@ class SectionActivity : AppCompatActivity(),ListOfAttendanceAdapter.ItemClickLis
         );
 
         attendanceListRecycler = findViewById(R.id.attendanceListRecycler);
-        attendanceListRecycler.layoutManager = LinearLayoutManager(this)
-        attendanceListRecycler.adapter = ListOfAttendanceAdapter(AttendanceList,this);
+        attendanceListRecycler.layoutManager = LinearLayoutManager(this);
+
+            attendanceListRecycler.adapter = ListOfAttendanceAdapter(AttendanceList,this);
+
+
 
         courseTitle.text = section.courseName
         NewLec = findViewById(R.id.new_lec_btn)
@@ -88,12 +92,23 @@ class SectionActivity : AppCompatActivity(),ListOfAttendanceAdapter.ItemClickLis
         fun onResponse(listOfAttendance: ArrayList<Attendance>)
     }
     @Override
-    override fun onItemClick(position: Int) {
-        val intent = Intent(this, show_std_attendance::class.java)
-        intent.putExtra("selected_attendance", AttendanceList[position] as Serializable)
-        intent.putExtra("section", section as Section)
-        intent.putExtra("userID",userId)
-        startActivity(intent)
+    override fun onItemClick(position: Int, type: Int) {
+        if(type == 0) {
+            // edit
+            val intent = Intent(this, show_std_attendance::class.java)
+            intent.putExtra("selected_attendance", AttendanceList[position] as Serializable)
+            intent.putExtra("section", section as Section)
+            intent.putExtra("userID", userId)
+            startActivity(intent)
+        }
+        else if(type == 1)
+        {
+            //delete attendance
+            var s = "Deleted: " + AttendanceList[position].getDate();
+            teacherFirebase.deleteAttendance(AttendanceList[position], section.courseName, userId)
+            Toast.makeText(this, s, Toast.LENGTH_SHORT).show()
+        }
+
     }
 
 }

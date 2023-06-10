@@ -89,6 +89,23 @@ public class TeacherFirebaseDAO implements ITeacherDao {
         myRef.child("Teachers").child(userId).child("Sections").child(sectionId).child("Attendance").child(attendance.getDate()).setValue(attendance);
 
     }
+    @Override
+    public void deleteAttendance(Attendance attendance, String sectionId, String userId) {
+        try {
+            myRef.child("Teachers")
+                    .child(userId)
+                    .child("Sections")
+                    .child(sectionId)
+                    .child("Attendance")
+                    .child(attendance.getDate())
+                    .removeValue();
+            Log.i("YourTag", "Successssss: " );
+        } catch (Exception e) {
+            // Handle any exceptions that occur during the removal of the attendance record
+            Log.i("YourTag", "Exception occurred: " + e.getMessage());
+        }
+
+    }
 
     @Override
     public void addSection( String userId, Section section) {
