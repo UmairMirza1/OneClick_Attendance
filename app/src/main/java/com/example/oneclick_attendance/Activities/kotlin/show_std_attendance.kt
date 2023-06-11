@@ -16,6 +16,7 @@ import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -107,6 +108,7 @@ class show_std_attendance: AppCompatActivity() {
             val file = File(letDirectory, fileName)
             // write to the created file
             file.appendText(csvString)
+            Toast.makeText(this, "Exported To: /Android/data/attendances/com.example.OneClick/", Toast.LENGTH_SHORT).show()
 
         }
 
